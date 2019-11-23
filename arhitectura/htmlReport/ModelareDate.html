@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body style="text-align:center;">
+    <section>
+        <h1>Modelarea datelor provenite din API-uri</h1>
+        <section>
+            Pentru a retine datele in maniera consistenta, vom utiliza o baza de date SQL Lite. In baza de date SQL Lite,
+            vom tine date in care sa cuprindem informatii referitoare la stocurile depozitelor, date legate de livrari, de companii.
+            Vom aplica procesare asupra datelor sensibile, cum ar fi parolele conturilor utilizatorilor, le vom insera in baza de date intr-o maniera
+            hashed, iar algoritmul de hashing pe care il vom folosi va fi base64.<br>
+            Vom modela datele astfel incat sa fie cat mai atomice, nu vom retine de mai multe ori aceleasi informatii, vom incerca sa utilizam stocarea
+            intr-o maniera cat mai inteligenta. Datele provenite de la API-urile publice vor fi procesate astfel incat sa le putem reutiliza daca este necesar,
+            de exemplu, datele provenite de la API-ul de cartografiere, vom extrage o lista de coordonate pe care o vom retine consistent, pentru a putea 
+            redesena un traseu pe care a avut loc o anumita livrare, sau pentru a putea reutiliza traseul, pentru a-l putea sugera, in cazul in care a mai fost facut
+            un transport intre cele doua puncte in trecut.
+        </section>
+    </section>
+</body>
+</html>

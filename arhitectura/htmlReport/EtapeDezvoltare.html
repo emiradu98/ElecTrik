@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body style="text-align:center;">
+    <section>
+        <h1>Informatii privind etapele de dezvoltare</h1>
+        <section>
+            <h3>Documentatia</h3>
+            <p>Aceasta este prima etapa a dezvoltarii aplicatiei noastre si posibil cea mai importanta etapa. In
+                cadrul acestei etape de dezvoltare, am stabilit felul in care va fi structurata aplicatia noastra, am 
+                luat decizii asupra felului in care vom organiza codul. Am facut diagrame de clase pentru a putea avea
+                o vedere de ansamblu asupra modulelor, si asupra schemei intregii aplicatii, pentru a ne da seama cum
+                am putea obtine o aplicatie consistenta si fluida, unde comunicarea dintre module are logica si este cat
+                de cat fireasca, nu fortata, in orice fel.<br>
+                In cadrul acestei etape, am ales framework-ul cu care vom lucra la nivel de back-end, adica Express. Am ales
+                acest framework deoarece vine cu multe elemente ce fac dezvoltarea sa fie mai facila, poti avea un server functional
+                in cateva linii de cod, si mai important, in cateva secunde. De asemenea, Express are una dintre cele mai mari
+                comunitati, este foarte usor sa gasim documentatie pentru el, si este foarte usor sa reutilizezi codul prin prisma
+                acestui framework. Simplificarea unor aspecte ale etapei de dezvoltare este principalul aspect pe care il urmarim,
+                iar Express ne ofera o suita de functionalitati foarte utile, in aceasta directie.<br>
+                Vom utiliza o suita de API-uri publice pentru diverse functionalitati ale paginii web, cum ar fi oferirea unei
+                harti interactive utilizatorului, posibilitatea salvarii unui fisier in format PDF sau XML, crearea de grafice
+                si diagrame atractive, sincronizarea cu cursul valutar actual.
+            </p>
+        </section>
+        <section>
+            <h3>Dezvoltarea</h3>
+            <p>
+                Aceasta este a doua etapa a dezvoltarii aplicatiei. In cadrul acestei etape, vom urma lucrurile puse
+                cap la cap in cadrul etapei de documentare. Vom construi clase, pretandu-ne la diagramele UML create, pentru
+                ca acestea ne garanteaza un anumit work-flow. Componenta centrala a aplicatiei va fi server-ul, prin el vom gestiona
+                operatiile corespunzatoare la nivel de back-end, diverselor actiuni pe care la va intreprinde utilizatorul in cadrul
+                platformei. Server-ul va contine logica de comunicare a modulelor, va fi de fapt ca un fel de punte intre celelalte module
+                ale aplicatiei, se va folosi de toate intr-o maniera consistenta.
+                Server-ul va fi implementat cu ajutorul feature-urilor puse la dispozitie de framework-ul Express.<br>
+                Vom scrie codul respectand standarde de clean-code, pentru a fi usor sa revenim la diverse portiuni din cod,
+                si pentru a ne fi usor sa extindem functionalitatile atunci cand va fi cazul. Vom ingloba API-urile externe in cadrul aplicatiei,
+                vom modela datele primite de la acestea si le vom expune intr-o maniera cat mai placuta pentru utilizator implementand la nivel de server
+                o logica pentru parsarea datelor, iar la nivel de client, logica pentru procesarea datelor.<br>
+            </p>
+        </section>
+    </section>
+</body>
+</html>
