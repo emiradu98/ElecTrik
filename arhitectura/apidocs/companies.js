@@ -148,11 +148,6 @@
  * @apiParamExample {json} ID:
  * {
  *        "companyName": string,
- *        "company_locations: [],
- *        "address": string,
- *        "userID": string,
- *        "contactNumber": number,
- *        "email": string,
  *        "type": string
  * }
  *
@@ -161,14 +156,14 @@
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
  *              {
- *                  message: 'Successfully created'
+ *                  message: 'Successfully updated'
  *              }
  *
  * @apiError ValidationError Invalid values.
  *
  * @apiErrorExample Error-Response:
- *     HTTP/1.1 406 NOT ACCEPTABLE
+ *     HTTP/1.1 401 Unauthorized
  *     {
- *       "error": "companyName needs to be between 3 and 25 characters"
+ *       "error": "User is not authorized"
  *     }
  */
