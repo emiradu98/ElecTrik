@@ -1,16 +1,9 @@
-# Title / Repository Name
+# ElecTrik
 
 ## About / Synopsis
 
-* What is it, what does it do / Abstract
-* Project status: working/prototype
-* Nuxeo Support
-
-See real examples:
-
-* <https://github.com/nuxeo/nuxeo/blob/master/README.md>
-* <https://github.com/nuxeo/nuxeo-drive/blob/master/README.md>
-* <https://github.com/nuxeo/nuxeo-sdk-ios/blob/master/README.md>
+* DAWJS Faculty of Computer Scrience Iasi
+* Project status: incipient
 
 ## Table of contents
 
