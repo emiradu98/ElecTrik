@@ -1,0 +1,7 @@
+{
+  "name": "ElecTrik API",
+  "version": "1.0.0",
+  "description": "Basic verison of the API",
+  "title": "ElecTrik API",
+  "url" : "https://api.electrik.com/v1/"
+}
