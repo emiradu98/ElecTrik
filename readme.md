@@ -7,13 +7,11 @@
 
 ## Table of contents
 
-Use for instance <https://github.com/ekalinin/github-markdown-toc>:
-
-> * [Title / Repository Name](#title--repository-name)
+> * [ElecTrik](#electrik)
 >   * [About / Synopsis](#about--synopsis)
 >   * [Table of contents](#table-of-contents)
 >   * [Installation](#installation)
->   * [Usage](#usage)
+>   * [Requirements](#requirements)
 >     * [Screenshots](#screenshots)
 >     * [Features](#features)
 >   * [Code](#code)
@@ -29,14 +27,17 @@ Use for instance <https://github.com/ekalinin/github-markdown-toc>:
 
 ## Installation
 
-Sample:
+Installation
 
-* From the Nuxeo Marketplace: install [the Sample Nuxeo Package](https://connect.nuxeo.com/nuxeo/site/marketplace/package/nuxeo-sample).
-* From the command line: `nuxeoctl mp-install nuxeo-sample`
+* Installing Frond-End from the command line: `npm i`
+* Running Front-End from the command line: `npm start`
 
-## Usage
+## Requirements
+* Sa se realizeze un mash-up Web menita sa gestioneze in timp-real a fluxurile de activitati dintr-un lant de furnizori de energie, baterii si acumulatori speciali pentru drone, biciclete si autoturisme electrice. Minimal, se vor oferi: posibilitatea de a monitoriza de la distanta stocul de baterii, de a rezolva plata energiei livrate, de a notifica anumiti clienti fideli asupra schimbarilor survenite -- de exemplu, modificari de pret, indisponibilitatea unui tip de baterie/acumulator pentru o anumita marca, oferte privind accesorii speciale etc. Noutatile vizand ofertele vor fi redate via notificari in navigatorul Web. Localizarea acestor statii de furnizare de energie electrica va putea fi semnalata pe harta via un serviciu Web cartografic precum OpenStreetMap. De asemenea, se vor oferi rapoarte si vizualizari atractive privitoare la stocurile de baterii/acumulatori, inclusiv situatia vanzarilor per sortiment, perioada de timp sau in functie de un anumit client.
 
 ### Screenshots
+
+* Incoming
 
 ### Features
 
