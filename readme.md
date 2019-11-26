@@ -54,7 +54,7 @@ Installation
 
 Libraries and external APIs:
 
-* [APIDOCS LINK](/arhitectura/apidocs/doc)
+* [APIDOCS LINK](/arhitectura/apidocs/doc/index.html)
 * [Link to project](https://jira.nuxeo.com/secure/CreateIssue!default.jspa?project=NXP)
 
 ## License
