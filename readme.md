@@ -54,7 +54,7 @@ Installation
 
 Libraries and external APIs:
 
-* [Link to component](https://jira.nuxeo.com/issues/?jql=project%20%3D%20NXP%20AND%20component%20%3D%20Elasticsearch%20AND%20Status%20!%3D%20%22Resolved%22%20ORDER%20BY%20updated%20DESC%2C%20priority%20DESC%2C%20created%20ASC)
+* [APIDOCS LINK](/arhitectura/apidocs/doc)
 * [Link to project](https://jira.nuxeo.com/secure/CreateIssue!default.jspa?project=NXP)
 
 ## License
