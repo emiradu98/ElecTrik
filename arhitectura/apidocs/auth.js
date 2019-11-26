@@ -98,44 +98,6 @@
  */
 
 
-/**
- * @api {post} oauth2/reset-password Reset Password
- * @apiName Reset Password
- * @apiGroup Auth
- *
- * @apiHeaderExample  {json} Request Body:
-            {
-                "client_id": "string",
-                "client_secret": "string",
-                "grant_type": "client_credentials",
-                "email": "string",
-                "resetPasswordToken": "string",
-                "newPassword": "string"
-            }
- *
- * @apiSuccess {json} oauth2 token  A JSON object containing reset password request details.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *      {
-            "client_id": "string",
-            "client_secret": "string",
-            "grant_type": "client_credentials",
-            "email": "string",
-            "resetPasswordToken": "string",
-            "newPassword": "string"
- *      }
- *
- * @apiError UserNotFound The user is not authorized.
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 401 Unauthorized
- *     {
- *       "error": "password mismatch"
- *     }
- */
-
-
 
 /**
  * @api {post} oauth2/logout Logout User
