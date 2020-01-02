@@ -90,4 +90,4 @@ function SqliteDbInit(dataBaseName){
 
 let a = new SqliteDbInit('electrik.db');
 a.constructDatabase();
-//a.selectDataTest();
+a.selectDataTest();
