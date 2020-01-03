@@ -1,8 +1,13 @@
 function Server(){
     const express = require('express');
     const bodyParser = require('body-parser');
-    let userOperations = require('./usersModule/userOperations');
-    let userInfo = new userOperations();
+    let reqOperations = require('./reqModule/requestOperations');
+    // let userOperations = require('./reqModule/userOperations');
+    // let companyOperations = require('./reqModule/companyOperations');
+    // let companyInfo = new companyOperations();
+    // let userInfo = new userOperations();
+    let requestInfo = new reqOperations();
+    
 
     const app = express();
     app.use(bodyParser.json());
@@ -10,30 +15,64 @@ function Server(){
 
     const PORT = 80;
 
-    // app.get('/pen',(req,res)=>{
-    //     console.log(req.body);
-    //     res.send('Hello World');
-    // });
-
-    // app.post('/pen2',(req,res)=>{
-    //     console.log(req.body);
-    //     res.send('Hello!');
-    // });
-
     app.post('/registerUser',(req,res)=>{
-        res.send(userInfo.registerUser(req.body)); 
+        res.send(requestInfo.register('users',req.body)); 
     });
 
     app.get('/login',(req,res)=>{
-        res.send(userInfo.loginUser(req.body));
+        res.send(requestInfo.loginUser(req.body));
     });
 
     app.post('/updateUser',(req,res)=>{
-        res.send(userInfo.updateUserData(req.body));
+        res.send(requestInfo.updateData('users',req.body));
     });
 
     app.post('/deleteUser',(req,res)=>{
-        res.send(userInfo.deleteUser(req.body)); 
+        res.send(requestInfo.deleteData('users',req.body)); 
+    });
+
+    app.post('/registerCompany',(req,res)=>{
+        res.send(requestInfo.register('companies',req.body));
+    });
+
+    app.post('/updateCompany',(req,res)=>{
+        res.send(requestInfo.updateData('companies',req.body));
+    });
+
+    app.post('/deleteCompany',(req,res)=>{
+        res.send(requestInfo.deleteData('companies',req.body));
+    });
+
+    app.post('/findCompany',(req,res)=>{
+        res.send(requestInfo.selectFrom('companies',req.body));
+    });
+
+    app.post('/registerDeposit',(req,res)=>{
+        res.send(requestInfo.register('deposits',req.body));
+    });
+
+    app.post('/updateDeposit',(req,res)=>{
+        res.send(requestInfo.updateData('deposits',req.body));
+    });
+
+    app.post('/deleteDeposit',(req,res)=>{
+        res.send(requestInfo.deleteData('deposits',req.body));
+    });
+
+    app.post('/registerProduct',(req,res)=>{
+        res.send(requestInfo.register('products',req.body));
+    });
+
+    app.post('/updateProduct',(req,res)=>{
+        res.send(requestInfo.updateData('products',req.body));
+    });
+
+    app.post('/deleteProduct',(req,res)=>{
+        res.send(requestInfo.deleteData('products',req.body));
+    });
+
+    app.get('/findCompany',(req,res)=>{
+        res.send(requestInfo.find('companies',req.body));
     });
 
     app.listen(PORT,()=>{

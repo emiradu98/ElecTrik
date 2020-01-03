@@ -2,37 +2,37 @@ function userOperations(){
     const dbOperations = require('../databaseModule/dbOperations');
     const dataBase = new dbOperations('electrik.db');
 
-    function registerUser(userObject){
+    function register(tableName,dataObject){
         try{
-            dataBase.insertData('users',[userObject]);
+            dataBase.insertData(tableName,[dataObject]);
         }catch(err){
             return 'E-mail or phone number already in use';
         }
         return 'Registered succesfull';
     }
 
-    function deleteUser(userObject){
+    function deleteData(tableName,dataObject){
         let selectedData;
         try{
-            selectedData = dataBase.selectData('users',userObject);
+            selectedData = dataBase.selectData(tableName,dataObject);
             if(selectedData.length > 0){
-                dataBase.deleteData('users',userObject);
+                dataBase.deleteData(tableName,dataObject);
             }
         }catch(err){
             return 'An error has occured!';
         }
         if(selectedData.length > 0){
-            return 'Account deleted!';
+            return 'Data deleted!';
         }else{
-            return 'No account to delete!';
+            return 'No data found!';
         }
     }
 
-    function loginUser(userObject){
+    function loginUser(dataObject){
         //aici ar trebui sa fie updatat token-ul in baza de date,marcam ca e or smth, la asta si cel de jos vb cu emi inainte de a face ceva
         let selectedData;
         try{
-            selectedData = dataBase.selectData('users',userObject);
+            selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
             return 'An error has occured!';
         }
@@ -47,21 +47,47 @@ function userOperations(){
         //aici ar trebui sa fie updatat token-ul din baza de date, in sensul ca marcam ca nu mai e or smth
     }
 
-    function updateUserData(userObject){
+    function updateData(tableName,dataObject){
         try{
-            dataBase.updateData('users',userObject.value,userObject.where);
+            dataBase.updateData(tableName,dataObject.value,dataObject.where);
         }catch(err){
             return 'Error has occured!';
         }
         return 'Data succsefully updated!';
     }
 
+    function selectFrom(tableName,dataObject){
+        let selectedData;
+        try{
+            selectedData = dataBase.selectData(tableName,dataObject);
+        }catch(err){
+            return 'An error occured!';
+        }
+        if(selectedData.length > 0){
+            return 'Found';
+        }else{
+            return 'Not found!';
+        }
+    }
+
+    function find(tableName,dataObject){
+        let selectedData;
+        try{
+            selectedData = dataBase.selectMatch(tableName,dataObject);
+        }catch(err){
+            return 'An error has occured!';
+        }
+        return selectedData;
+    }
+
     return {
-        registerUser:registerUser,
+        register:register,
         loginUser:loginUser,
-        deleteUser:deleteUser,
+        deleteData:deleteData,
         logoutUser:logoutUser,
-        updateUserData:updateUserData
+        updateData:updateData,
+        selectFrom:selectFrom,
+        find:find
     };
 }
 module.exports = userOperations;
