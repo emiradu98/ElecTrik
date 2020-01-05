@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "scss": "node-sass --output-style compressed -o dist/css src/scss",
-    "serve": "browser-sync start --server --files 'dist/css/*.css, **/*.html'",
+    "serve": "browser-sync start --server --watch",
     "watch:css": "onchange 'src/scss' -- npm run scss",
     "start": "run-p serve watch:css"
   },
