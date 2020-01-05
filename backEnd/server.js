@@ -20,7 +20,13 @@ function Server(){
     });
 
     app.get('/login',(req,res)=>{
+        // console.log(req.)
         res.send(requestInfo.loginUser(req.body));
+    });
+
+    app.post('/logout',(req,res)=>{
+        console.log(req.headers.authorization.split(' ')[1]);
+        res.send(requestInfo.logoutUser(req.body));
     });
 
     app.post('/updateUser',(req,res)=>{
