@@ -1,14 +1,25 @@
 function userOperations(){
     const dbOperations = require('../databaseModule/dbOperations');
     const dataBase = new dbOperations('electrik.db');
+    const credentials = {
+        client:{
+            id:'<client-id>',
+            secret:'<client-secret>'
+        },
+        auth:{
+            tokenHost:'https://api.oauth.com'
+        }
+    };
+    const crypto = require('crypto');
+    const oauth2 = require('simple-oauth2').create(credentials);
 
     function register(tableName,dataObject){
         try{
             dataBase.insertData(tableName,[dataObject]);
         }catch(err){
-            return 'E-mail or phone number already in use';
+            return {status:'E-mail or phone number already in use'};
         }
-        return 'Registered succesfull';
+        return {status:'Registered succesfull'};
     }
 
     function deleteData(tableName,dataObject){
@@ -19,13 +30,43 @@ function userOperations(){
                 dataBase.deleteData(tableName,dataObject);
             }
         }catch(err){
-            return 'An error has occured!';
+            return {status:'An error has occured!'};
         }
         if(selectedData.length > 0){
-            return 'Data deleted!';
+            return {status:'Data deleted!'};
         }else{
-            return 'No data found!';
+            return {status:'No data found!'};
         }
+    }
+
+    function isLogged(dataObject){
+        let auth;
+        let selectedData;
+        try{
+            selectedData = dataBase.selectData(tableName,dataObject);
+        }catch(err){
+            return {status:'An error has occured!'};
+        }
+        if(selectedData.length > 0){
+            let auth_token = JSON.parse(selectedData.auth_token);
+            if(auth_token.expire()){
+                logoutUser(dataObject);
+                return {status:'Session expired!'};
+            }else{
+                return true;
+            }
+        }else{
+            return {status:'Can t found any user!'};
+        }
+    }
+
+    function createToken(){
+        let token = '';
+        for(let i=0;i<16;i++){
+            token += Math.floor(Math.random()*1024+0);
+        }
+        token = crypto.createHash('sha256').update(token).digest('hex');
+        return token;
     }
 
     function loginUser(dataObject){
@@ -34,16 +75,36 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
-            return 'An error has occured!';
+            return {status:'An error has occured!'};
         }
         if(selectedData.length == 0){
-            return 'No user with this credentials!';
+            return {status:'No user with this credentials!'};
         }else{
-            return 'Login succesfull';
+            let tokenObject = {
+                'access_token':'<access-token>',
+                'refresh_token':'<refresh-token>',
+                'expires_in':'7200'
+            };
+            let accessToken = oauth2.accessToken.create(tokenObject);
+            let token = createToken();
+            dataBase.updateData('users',{auth_token:JSON.stringify(accessToken),token:token},dataObject);
+            return {status:'Login succesfull!',data:token};
         }
     }
 
-    function logoutUser(userObject){
+    function logoutUser(dataObject){
+        let selectedData;
+        try{
+            selectedData = dataBase.selectData('users',dataObject);
+        }catch(err){
+            return {status:'An error has occured!'};
+        }
+        if(selectedData.length == 0){
+            return {status:'No user with this credentials!'};
+        }else{
+            dataBase.updateData('users',{auth_token:'',token:''},dataObject);
+            return {status:'Logout succesfull'};
+        }
         //aici ar trebui sa fie updatat token-ul din baza de date, in sensul ca marcam ca nu mai e or smth
     }
 
@@ -51,9 +112,9 @@ function userOperations(){
         try{
             dataBase.updateData(tableName,dataObject.value,dataObject.where);
         }catch(err){
-            return 'Error has occured!';
+            return {status:'Error has occured!'};
         }
-        return 'Data succsefully updated!';
+        return {status:'Data succsefully updated!'};
     }
 
     function selectFrom(tableName,dataObject){
@@ -61,12 +122,12 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData(tableName,dataObject);
         }catch(err){
-            return 'An error occured!';
+            return {status:'An error occured!'};
         }
         if(selectedData.length > 0){
-            return 'Found';
+            return {status:'Found',data:selectedData};
         }else{
-            return 'Not found!';
+            return {status:'Not found!'};
         }
     }
 
@@ -75,9 +136,9 @@ function userOperations(){
         try{
             selectedData = dataBase.selectMatch(tableName,dataObject);
         }catch(err){
-            return 'An error has occured!';
+            return {status:'An error has occured!'};
         }
-        return selectedData;
+        return {status:'Ok',data:selectedData};
     }
 
     return {

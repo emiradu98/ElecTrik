@@ -106,11 +106,12 @@ function dbOperations(dataBaseName){
 
 }
 let arr_obj = [
-    {first_name:'Ocu',last_name:'Dumitru',email:'ocuDum@yahoo.com',phone:'0751414143',password:'bbanan2',region:'South America',location:'LosAngeles',country:'USA',auth_token:'',company_id:1,title:'Local'},
-    {first_name:'George',last_name:'Rohozneanu',email:'rohoGeo@gmail.com',phone:'0753010142',password:'lubitzu',region:'Europe',location:'London',country:'USA',auth_token:'',company_id:1,title:'Local'}
+    {first_name:'Ocu',last_name:'Dumitru',email:'ocuDum@yahoo.com',phone:'0751414143',password:'bbanan2',region:'South America',location:'LosAngeles',country:'USA',auth_token:'',token:'',company_id:1,title:'Local'},
+    {first_name:'George',last_name:'Rohozneanu',email:'rohoGeo@gmail.com',phone:'0753010142',password:'lubitzu',region:'Europe',location:'London',country:'USA',auth_token:'',token:'',company_id:1,title:'Local'}
 ];
 module.exports = dbOperations;
-console.log(new dbOperations('electrik.db').selectMatch('companies',{company_name:'Tec'}));
+//console.log(typeof new dbOperations('electrik.db').selectData('users')[0]);
+// console.log(new dbOperations('electrik.db').selectMatch('companies',{company_name:'Tec'}));
 //new dbOperations('electrik.db').insertData('users',[arr_obj[0]]);
 //new dbOperations('electrik.db').selectData('users',{email:'ocuDum@yahoo.com'});
 // new dbOperations('electrik.db').updateData('users',{email:'oculutz@gmail.com',phone:'0751401122'},{email:'ocuDum@yahoo.com'});

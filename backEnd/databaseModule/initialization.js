@@ -23,7 +23,7 @@ function SqliteDbInit(dataBaseName){
         // ];
         let stmt = db.prepare(`
             INSERT INTO users(first_name,last_name,email,phone,password,region,
-                location,country,auth_token,company_id,title) VALUES(@firstName,@lastName,@email,@phone,@password,@region,@location,@country,@auth,@idCompany,@title)
+                location,country,auth_token,token,company_id,title) VALUES(@firstName,@lastName,@email,@phone,@password,@region,@location,@country,@auth,@token,@idCompany,@title)
         `);
         for(let data of datas){
             stmt.run(data);
@@ -50,6 +50,7 @@ function SqliteDbInit(dataBaseName){
             location TEXT NOT NULL,
             country TEXT NOT NULL,
             auth_token TEXT,
+            token TEXT,
             company_id INTEGER NOT NULL,
             title TEXT NOT NULL
         )`);
@@ -78,8 +79,8 @@ function SqliteDbInit(dataBaseName){
             admin_ids TEXT NOT NULL
         )`);
         let arr_obj = [
-            {firstName:'Livint',lastName:'Lucian',email:'livintLl@gmail.com',phone:'0751414141',password:'bbanana',region:'South America',location:'LosAngeles',country:'USA',auth:'',idCompany:1,title:'General'},
-            {firstName:'David',lastName:'Brancu',email:'calcal@yahoo.com',phone:'0751414142',password:'bbanan1',region:'Europe',location:'London',country:'USA',auth:'',idCompany:1,title:'Local'}
+            {firstName:'Livint',lastName:'Lucian',email:'livintLl@gmail.com',phone:'0751414141',password:'bbanana',region:'South America',location:'LosAngeles',country:'USA',auth:'',token:'',idCompany:1,title:'General'},
+            {firstName:'David',lastName:'Brancu',email:'calcal@yahoo.com',phone:'0751414142',password:'bbanan1',region:'Europe',location:'London',country:'USA',auth:'',token:'',idCompany:1,title:'Local'}
         ];
         let new_obj = {companyName:'FluxEnergy',regions:'South American, North America, Europe',adminIds:'1'};
         //console.log(db.prepare('select * from sqlite_master').all());
