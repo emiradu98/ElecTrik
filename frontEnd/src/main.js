@@ -10,7 +10,7 @@ import Router from "./config/Router.js";
 // const mainDiv = document.getElementById('main');
 
 const router = new Router();
-router.get('/', function(req){
+router.get('/login', function(req){
     console.log(req.path);
 })
 router.init();

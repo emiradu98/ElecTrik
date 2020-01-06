@@ -15,9 +15,8 @@ export default class Header extends Component {
               <div>
                   Logo
               </div>
-              <a href="/login">hello</a>
+              <div id="login-button" onclick="history.pushState('','','/login')">Login</div>
             </div>
-           
         `;
     }
 };

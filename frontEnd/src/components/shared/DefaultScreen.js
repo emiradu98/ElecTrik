@@ -14,7 +14,8 @@ export default class DefaultScreen extends Component {
     render() {
         let header = new Header()
         this.element.innerHTML = `
-            ${header.render()}
+              ${header.render()}
+            </div>
             <div class="content">
             </div>
         `;

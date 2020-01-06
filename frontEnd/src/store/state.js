@@ -1,7 +1,7 @@
 export default {
-    items: [
-        'I made this',
-        'Another thing'
-    ],
-    isLoggedIn: false
+    user: {
+        isLoggedIn: false
+    },
+    products: [],
+    company: [],
 };
