@@ -88,7 +88,7 @@ function userOperations(){
             let accessToken = oauth2.accessToken.create(tokenObject);
             let token = createToken();
             dataBase.updateData('users',{auth_token:JSON.stringify(accessToken),token:token},dataObject);
-            return {status:'Login succesfull!',data:token};
+            return {status:'Login succesfull!',token:token};
         }
     }
 
