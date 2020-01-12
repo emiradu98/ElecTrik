@@ -1,3 +1,5 @@
+export const head = document.getElementById('head')
+
 export default class Router {
 
     constructor() {
@@ -23,7 +25,7 @@ export default class Router {
 
     init() {
         this.routes.some(route => {
-
+            console.log(route)
             let regEx = new RegExp(`^${route.uri}$`);
             let path = window.location.pathname;
 
