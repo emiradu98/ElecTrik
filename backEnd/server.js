@@ -22,14 +22,15 @@ function Server(){
     });
 
     app.post('/auth/login',(req,res)=>{
-        // console.log(req.)
         res.send(requestInfo.loginUser(req.body));
     });
 
     app.post('/auth/logout',(req,res)=>{
-        console.log(req.headers.authorization.split(' ')[1]);
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        console.log('auth',req.body);
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.logoutUser(req.body));
+        }else{
+            res.send({status:'Invalid token!'});
         }
     });
 
