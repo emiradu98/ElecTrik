@@ -22,7 +22,7 @@ function dbOperations(dataBaseName){
     
     this.selectData = function(tableName,otherParams){
         sqlQuery = 'select * from ' + tableName;
-        if(otherParams !== undefined){
+        if(Object.keys(otherParams).length > 0){
             sqlQuery += ' where ';
             let keys = Object.keys(otherParams);
             let keysLength = keys.length;

@@ -10,12 +10,24 @@ function userOperations(){
             tokenHost:'https://api.oauth.com'
         }
     };
+    const utility = require('../utility');
     const crypto = require('crypto');
     const oauth2 = require('simple-oauth2').create(credentials);
 
     function register(tableName,dataObject){
         try{
-            dataBase.insertData(tableName,[dataObject]);
+            selectedData = dataBase.selectData(tableName,dataObject);
+            if(selectedData.length === 0){
+                if(utility.validateEmail(dataObject.email) === true){
+                    if(dataObject.first_name.length > 1 && dataObject.last_name.length > 1){
+                        dataBase.insertData(tableName,[dataObject]);
+                    }else{
+                        return {status:'First or Last Name too short!'};
+                    }
+                }else{
+                    return {status:'Invalid email address!'};
+                }
+            }
         }catch(err){
             return {status:'E-mail or phone number already in use'};
         }
@@ -30,7 +42,7 @@ function userOperations(){
                 dataBase.deleteData(tableName,dataObject);
             }
         }catch(err){
-            return {status:'An error has occured!'};
+            return {status:err};
         }
         if(selectedData.length > 0){
             return {status:'Data deleted!'};
@@ -45,7 +57,7 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData(tableName,dataObject);
         }catch(err){
-            return {status:'An error has occured!'};
+            return {status:err};
         }
         if(selectedData.length > 0){
             let auth_token = JSON.parse(selectedData.auth_token);
@@ -75,7 +87,7 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
-            return {status:'An error has occured!'};
+            return {status:err};
         }
         if(selectedData.length == 0){
             return {status:'No user with this credentials!'};
@@ -97,7 +109,7 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
-            return {status:'An error has occured!'};
+            return {status:err};
         }
         if(selectedData.length == 0){
             return {status:'No user with this credentials!'};
@@ -112,7 +124,7 @@ function userOperations(){
         try{
             dataBase.updateData(tableName,dataObject.value,dataObject.where);
         }catch(err){
-            return {status:'Error has occured!'};
+            return {status:err};
         }
         return {status:'Data succsefully updated!'};
     }
@@ -122,7 +134,7 @@ function userOperations(){
         try{
             selectedData = dataBase.selectData(tableName,dataObject);
         }catch(err){
-            return {status:'An error occured!'};
+            return {status:err};
         }
         if(selectedData.length > 0){
             return {status:'Found',data:selectedData};
@@ -136,7 +148,7 @@ function userOperations(){
         try{
             selectedData = dataBase.selectMatch(tableName,dataObject);
         }catch(err){
-            return {status:'An error has occured!'};
+            return {status:err};
         }
         return {status:'Ok',data:selectedData};
     }
@@ -148,6 +160,7 @@ function userOperations(){
         logoutUser:logoutUser,
         updateData:updateData,
         selectFrom:selectFrom,
+        isLogged:isLogged,
         find:find
     };
 }

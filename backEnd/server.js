@@ -7,78 +7,104 @@ function Server(){
     // let companyInfo = new companyOperations();
     // let userInfo = new userOperations();
     let requestInfo = new reqOperations();
+    const cors = require('cors');
     
 
     const app = express();
+    app.use(cors());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
 
     const PORT = 80;
 
-    app.post('/registerUser',(req,res)=>{
+    app.post('/auth/register',(req,res)=>{
         res.send(requestInfo.register('users',req.body)); 
     });
 
-    app.get('/login',(req,res)=>{
+    app.post('/auth/login',(req,res)=>{
         // console.log(req.)
         res.send(requestInfo.loginUser(req.body));
     });
 
-    app.post('/logout',(req,res)=>{
+    app.post('/auth/logout',(req,res)=>{
         console.log(req.headers.authorization.split(' ')[1]);
-        res.send(requestInfo.logoutUser(req.body));
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.logoutUser(req.body));
+        }
     });
 
-    app.post('/updateUser',(req,res)=>{
-        res.send(requestInfo.updateData('users',req.body));
+    app.put('/users/update',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.updateData('users',req.body));
+        }
     });
 
-    app.post('/deleteUser',(req,res)=>{
-        res.send(requestInfo.deleteData('users',req.body)); 
+    app.delete('/users/delete',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.deleteData('users',req.body)); 
+        }
     });
 
-    app.post('/registerCompany',(req,res)=>{
-        res.send(requestInfo.register('companies',req.body));
+    app.post('/companies/register',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.register('companies',req.body));
+        }
     });
 
-    app.post('/updateCompany',(req,res)=>{
-        res.send(requestInfo.updateData('companies',req.body));
+    app.put('/companies/update',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.updateData('companies',req.body));
+        }
     });
 
-    app.post('/deleteCompany',(req,res)=>{
-        res.send(requestInfo.deleteData('companies',req.body));
+    app.delete('/companies/delete',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.deleteData('companies',req.body));
+        }
     });
 
-    app.post('/findCompany',(req,res)=>{
+    app.get('/companies/all',(req,res)=>{
         res.send(requestInfo.selectFrom('companies',req.body));
     });
 
-    app.post('/registerDeposit',(req,res)=>{
-        res.send(requestInfo.register('deposits',req.body));
+    app.post('/deposits/register',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.register('deposits',req.body));
+        }
     });
 
-    app.post('/updateDeposit',(req,res)=>{
-        res.send(requestInfo.updateData('deposits',req.body));
+    app.get('/users/all',(req,res)=>{
+        res.send(requestInfo.selectFrom('users',req.body));
     });
 
-    app.post('/deleteDeposit',(req,res)=>{
-        res.send(requestInfo.deleteData('deposits',req.body));
+    app.put('/deposits/update',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.updateData('deposits',req.body));
+        }
     });
 
-    app.post('/registerProduct',(req,res)=>{
-        res.send(requestInfo.register('products',req.body));
+    app.delete('/deposits/delete',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.deleteData('deposits',req.body));
+        }
     });
 
-    app.post('/updateProduct',(req,res)=>{
-        res.send(requestInfo.updateData('products',req.body));
+    app.post('/products/register',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.register('products',req.body));
+        }
     });
 
-    app.post('/deleteProduct',(req,res)=>{
-        res.send(requestInfo.deleteData('products',req.body));
+    app.put('/products/update',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.updateData('products',req.body));
+        }
     });
 
-    app.get('/findCompany',(req,res)=>{
-        res.send(requestInfo.find('companies',req.body));
+    app.delete('/products/delete',(req,res)=>{
+        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+            res.send(requestInfo.deleteData('products',req.body));
+        }
     });
 
     app.listen(PORT,()=>{
