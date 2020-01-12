@@ -11,12 +11,13 @@ export default class LoginScreen extends Component {
     }
 
     render() {
+        console.log(store.state.globalState.auth.users)
         this.element.innerHTML = `
               <input id="email"/>
               <input id="password"/>
               <a href="/register">Register</a>
               <button id="login-btn" onclick="login()">sss</button>
-              ${store.state.globalState.auth.users && store.state.globalState.auth.users.map((item)=>`<div>sss</div>`)}
+              ${store.state.globalState.auth.users && store.state.globalState.auth.users.map((item)=>`<div>${item.email}</div>`)}
         `;
     }
 };

@@ -1,6 +1,7 @@
 import Component from '../../lib/component.js';
 import store from '../../store/index.js';
 import Header from "./Header.js";
+import LoginScreen from "../auth/login/LoginScreen.js";
 
 export default class DefaultScreen extends Component {
     constructor() {
@@ -9,7 +10,7 @@ export default class DefaultScreen extends Component {
             element: document.getElementById('main'),
         });
         this.state = {
-            children: ''
+            children: []
         }
     }
 
@@ -22,5 +23,8 @@ export default class DefaultScreen extends Component {
         `;
         let header = new Header()
         header.render()
+        const loginScreen = new LoginScreen()
+        loginScreen.render()
+
     }
 };

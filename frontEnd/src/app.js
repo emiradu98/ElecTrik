@@ -11,8 +11,7 @@ defaultScreen.render();
 
 // routing files
 router.get('/login', function (req) {
-    let loginScreen = new LoginScreen()
-    loginScreen.render()
+
 })
 
 router.init();
