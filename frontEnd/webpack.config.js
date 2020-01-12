@@ -7,9 +7,7 @@ module.exports = ({mode}) => {
     return webpackMerge({
         entry: ['./src/app.js'],
         devServer: {
-            historyApiFallback: {
-                index: 'index.html'
-            }
+            historyApiFallback: true,
         },
         plugins: [
             new HTMLWebpackPlugin({

@@ -14,9 +14,7 @@ export default class DefaultScreen extends Component {
     }
 
     append(element){
-        console.log(element)
         this.state.children = element
-        console.log(this.state.children)
         this.render()
     }
     render() {

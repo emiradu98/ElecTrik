@@ -26,6 +26,7 @@
     "express": "^4.17.1",
     "html-webpack-plugin": "^3.2.0",
     "leaflet": "^1.6.0",
-    "mini-css-extract-plugin": "^0.9.0"
+    "mini-css-extract-plugin": "^0.9.0",
+    "replace-url-html-webpack-plugin": "^1.0.7"
   }
 }
