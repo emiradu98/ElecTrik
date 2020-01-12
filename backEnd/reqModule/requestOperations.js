@@ -1,6 +1,7 @@
 function userOperations(){
     const dbOperations = require('../databaseModule/dbOperations');
     const dataBase = new dbOperations('electrik.db');
+    const moment = require('moment');
     const credentials = {
         client:{
             id:'<client-id>',
@@ -54,14 +55,16 @@ function userOperations(){
     function isLogged(dataObject){
         let auth;
         let selectedData;
+        let tableName = 'users';
         try{
             selectedData = dataBase.selectData(tableName,dataObject);
         }catch(err){
             return {status:err};
         }
-        if(selectedData.length > 0){
-            let auth_token = JSON.parse(selectedData.auth_token);
-            if(auth_token.expire()){
+
+        if(selectedData[0] !== undefined){
+            let auth_token = JSON.parse(selectedData[0].auth_token);
+            if(moment(auth_token.token.expires_at).diff(moment()) < 0){
                 logoutUser(dataObject);
                 return {status:'Session expired!'};
             }else{
@@ -106,6 +109,7 @@ function userOperations(){
 
     function logoutUser(dataObject){
         let selectedData;
+        console.log('here',dataObject);
         try{
             selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
