@@ -1,6 +1,12 @@
 export default {
     addItem(state, payload) {
-        state.globalState.push(payload);
+        Object.keys(payload).forEach((item)=>{
+            if(state.globalState[item]){
+                state.globalState[item]=payload[item]
+            } else {
+                state.globalState[item]=payload[item]
+            }
+        })
         return state;
     },
     clearItem(state, payload) {

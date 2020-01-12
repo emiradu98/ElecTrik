@@ -6,11 +6,12 @@ export default class Header extends Component {
     constructor() {
         super({
             store,
+            element: document.getElementById('header')
         });
     }
 
     render() {
-        return `
+        this.element.innerHTML = `
             <div class="header">
               <div>
                   Logo

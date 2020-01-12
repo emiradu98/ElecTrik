@@ -1,3 +1,8 @@
 export default {
-    globalState: [],
+    globalState:
+        {
+            auth: {
+                loading: false
+            }
+        },
 };

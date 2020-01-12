@@ -13,18 +13,14 @@ export default class DefaultScreen extends Component {
         }
     }
 
-    append(element){
-        this.state.children = element
-        this.render()
-    }
     render() {
-        let header = new Header()
         this.element.innerHTML = `
-              ${header.render()}
+            <div id="header">
             </div>
-            <div class="content">
-                ${this.state.children}
+            <div class="content" id="content">
             </div>
         `;
+        let header = new Header()
+        header.render()
     }
 };
