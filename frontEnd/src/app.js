@@ -10,18 +10,12 @@ const defaultScreen = new DefaultScreen();
 defaultScreen.render();
 
 // routing files
-router.get('/login', function(req){
-    const loginScreen = new LoginScreen()
-    defaultScreen.append(loginScreen.render())
+router.get('/login', function (req) {
+    let loginScreen = new LoginScreen()
+    loginScreen.render()
 })
 
 router.init();
-
-
-
-
-
-
 
 
 // import store from './store/index.js';

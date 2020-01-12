@@ -1,7 +1,8 @@
 export default {
-    user: {
-        isLoggedIn: false
-    },
-    products: [],
-    company: [],
+    globalState:
+        {
+            auth: {
+                loading: false
+            }
+        },
 };
