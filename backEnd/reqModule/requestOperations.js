@@ -11,7 +11,8 @@ function userOperations(){
             tokenHost:'https://api.oauth.com'
         }
     };
-    const utility = require('../utility');
+    const utilitar = require('../utility');
+    const utility = new utilitar();
     const crypto = require('crypto');
     const oauth2 = require('simple-oauth2').create(credentials);
 
@@ -109,7 +110,6 @@ function userOperations(){
 
     function logoutUser(dataObject){
         let selectedData;
-        console.log('here',dataObject);
         try{
             selectedData = dataBase.selectData('users',dataObject);
         }catch(err){
@@ -157,6 +157,17 @@ function userOperations(){
         return {status:'Ok',data:selectedData};
     }
 
+    function insertInto(tableName,dataObjects){
+        for(let i=0;i<dataObjects.length;i++){
+            try{
+                dataBase.insertData(tableName,[dataObjects[i]]);
+            }catch(err){
+                return {status:err};
+            }
+        }
+        return {status:'Ok'};
+    }
+
     return {
         register:register,
         loginUser:loginUser,
@@ -165,6 +176,7 @@ function userOperations(){
         updateData:updateData,
         selectFrom:selectFrom,
         isLogged:isLogged,
+        insertInto:insertInto,
         find:find
     };
 }

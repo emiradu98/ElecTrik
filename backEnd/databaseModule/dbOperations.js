@@ -1,6 +1,7 @@
 function dbOperations(dataBaseName){
     const sqliteDb = require('better-sqlite3');
     let db = new sqliteDb(dataBaseName,{verbose:console.log});
+    
     this.insertData = function(tableName,dataToInsert){
         let sqlQuery = 'INSERT INTO ';
         sqlQuery += tableName + ' (';
@@ -22,7 +23,6 @@ function dbOperations(dataBaseName){
     
     this.selectData = function(tableName,otherParams){
         sqlQuery = 'select * from ' + tableName;
-        console.log('dbOperations',otherParams);
         if(Object.keys(otherParams).length > 0){
             sqlQuery += ' where ';
             let keys = Object.keys(otherParams);
@@ -60,7 +60,6 @@ function dbOperations(dataBaseName){
         // }
         let key = Object.keys(dataObject)[0];
         sqlQuery += (' where ' + key + ' LIKE ' + "'" + '%' + dataObject[key] + '%' + "'");
-        console.log(sqlQuery);
         return db.prepare(sqlQuery).all();
     }
     
@@ -103,7 +102,7 @@ function dbOperations(dataBaseName){
             }
         }
         return db.prepare(sqlQuery).run(parameters);
-    }
+    } 
 
 }
 let arr_obj = [

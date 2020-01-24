@@ -63,8 +63,10 @@ function SqliteDbInit(dataBaseName){
         createTable(`CREATE TABLE products(
             id INTEGER PRIMARY KEY,
             company_id INTEGER,
+            deposit_id INTEGER,
             producer TEXT,
             name TEXT,
+            stock INTEGER,
             availabe_series TEXT,
             taken_series TEXT,
             price REAL
@@ -74,9 +76,29 @@ function SqliteDbInit(dataBaseName){
             company_id INTEGER,
             location TEXT NOT NULL,
             location_coordinates TEXT NOT NULL,
-            products_ids TEXT,
-            products_stocks TEXT,
             admin_ids TEXT NOT NULL
+        )`);
+        createTable(`CREATE TABLE payment(
+            client_Id INTEGER,
+            provider_Id INTEGER,
+            payment_method TEXT NOT NULL,
+            price INTEGER,
+            payment_Id TEXT NOT NULL
+        )`);
+        createTable(`CREATE TABLE orders(
+            type TEXT NOT NULL,
+            isDelivered INTEGER,
+            client_Id INTEGER,
+            provider_Id INTEGER,
+            product_Id INTEGER,
+            quantity INTEGER,
+            shipmentDate TEXT,
+            arrivalDate TEXT,
+            order_Id TEXT NOT NULL
+        )`);
+        createTable(`CREATE TABLE order_payment(
+            order_Id TEXT NOT NULL,
+            payment_Id TEXT NOT NULL
         )`);
         let arr_obj = [
             {firstName:'Livint',lastName:'Lucian',email:'livintLl@gmail.com',phone:'0751414141',password:'bbanana',region:'South America',location:'LosAngeles',country:'USA',auth:'',token:'',idCompany:1,title:'General'},

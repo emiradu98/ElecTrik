@@ -26,7 +26,6 @@ function Server(){
     });
 
     app.post('/auth/logout',(req,res)=>{
-        console.log('auth',req.body);
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.logoutUser(req.body));
         }else{
@@ -47,9 +46,11 @@ function Server(){
     });
 
     app.post('/companies/register',(req,res)=>{
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
-            res.send(requestInfo.register('companies',req.body));
-        }
+        // if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        //     res.send(requestInfo.insertInto('companies',req.body));
+        // }
+        console.log(req.body);
+        res.send(requestInfo.insertInto('companies',[req.body]));
     });
 
     app.put('/companies/update',(req,res)=>{
@@ -75,6 +76,7 @@ function Server(){
     });
 
     app.get('/users/all',(req,res)=>{
+        console.log(req.body);
         res.send(requestInfo.selectFrom('users',req.body));
     });
 

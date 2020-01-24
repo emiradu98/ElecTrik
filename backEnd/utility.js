@@ -9,6 +9,5 @@ function utility(){
     };
 }
 
-module.exports = () => {
-    return new utility();
-};
+// console.log(new utility().validateEmail('ana@yahoo.com'));
+module.exports = utility;
