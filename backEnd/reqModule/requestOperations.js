@@ -85,6 +85,72 @@ function userOperations(){
         return token;
     }
 
+    function stockSelect(token,dataObject){
+        let selectData = dataBase.makeSelection('SELECT title,location,company_id FROM users WHERE token=' + "'" + token + "'");
+        if(selectData[0].title === 'General'){
+            let keys = Object.keys(dataObject);
+            let sqlDemand = 'SELECT id,name,producer,stock,deposi_id FROM products WHERE company_id=' + selectData.company_id;
+            if(keys.length > 0){
+                if(dataObject['name'] !== undefined){
+                    sqlDemand += ' and name=' + "'" + dataObject['name'] + "'";
+                }
+                if(dataObject['producer'] !== undefined){
+                    sqlDemand += ' and producer=' + "'" + dataObject['producer'] + "'";
+                }
+            }
+            let selection = dataBase.makeSelection(sqlDemand);
+            let depos = dataBase.makeSelection('SELECT * FROM deposits WHERE company_id=' + selectData.company_id);
+            for(let i=0;i<depos.length;i++){
+                for(let j=0;j<selection.length;j++){
+                    if(depos[i].id === selection[j].deposit_id){
+                        selection[j].location = depos[i].location;
+                    }
+                }
+            }
+            return {status:'Ok',data:selection};
+        }else{
+            let keys = Object.keys(dataObject);
+            let depo = dataBase.makeSelection('SELECT id,location FROM deposits WHERE company_id=' + selectData.company_id + ' and location=' + "'" + selectData.location + "'");
+            let sqlDemand = 'SELECT id,name,producer,stock FROM products WHERE deposit_id=' + depo.id;
+            if(keys.length > 0){
+                if(dataObject['name'] !== undefined){
+                    sqlDemand += ' and name=' + "'" + dataObject['name'] + "'";
+                }
+                if(dataObject['producer'] !== undefined){
+                    sqlDemand += ' and producer=' + "'" + dataObject['producer'] + "'";
+                }
+            }
+            let selection = dataBase.makeSelection(sqlDemand);
+            for(let i=0;i<selection.length;i++){
+                selection[i].location = depo.location;
+            }
+            return {status:'Ok',data:selection};
+        }
+    }
+
+    function announceClients(tok){
+        let selectData = dataBase.selectData('users',{token:tok});
+        if(selectData[0].title === 'General'){
+            let sqlDemand = 'SELECT DISTINCT client_Id,product_Id FROM orders WHERE provider_Id='+selectData[0].company_id;
+            let selection = dataBase.makeSelection(sqlDemand);
+            let companyData = dataBase.makeSelection('SELECT company_name FROM companies WHERE company_id=' + selectData[0].company_id);
+            for(let i=0;i<selection.length;i++){
+                let prData = dataBase.makeSelection('SELECT name,producer,price FROM producst WHERE id=' + selection[i].product_Id);
+                let info = 'Price for this product is now ' + prData.price + '!';
+                let obj = {
+                    receiver:selection[i].clientId,
+                    message:info,
+                    sender:companyData.company_name,
+                    subject:prData.producer + ' ' + prData.name
+                };
+                dataBase.insertData('news',obj);
+            }
+            return {status:'Clients have been notified!'};
+        }else{
+            return {status:'Only General can do this operation!'};
+        }
+    }
+
     function loginUser(dataObject){
         //aici ar trebui sa fie updatat token-ul in baza de date,marcam ca e or smth, la asta si cel de jos vb cu emi inainte de a face ceva
         let selectedData;
@@ -147,6 +213,20 @@ function userOperations(){
         }
     }
 
+    function selectFromProducts(dataObject){
+        let selectedData;
+        try{
+            selectedData = dataBase.selectAllProducts(dataObject);
+        }catch(err){
+            return {status:err};
+        }
+        if(selectedData.length > 0){
+            return {status:'Found',data:selectedData};
+        }else{
+            return {status:'Not found!'};
+        }
+    }
+
     function find(tableName,dataObject){
         let selectedData;
         try{
@@ -177,6 +257,8 @@ function userOperations(){
         selectFrom:selectFrom,
         isLogged:isLogged,
         insertInto:insertInto,
+        selectFromProducts:selectFromProducts,
+        stockSelect:stockSelect,
         find:find
     };
 }

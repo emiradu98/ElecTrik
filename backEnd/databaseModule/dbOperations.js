@@ -1,7 +1,7 @@
 function dbOperations(dataBaseName){
     const sqliteDb = require('better-sqlite3');
     let db = new sqliteDb(dataBaseName,{verbose:console.log});
-    
+
     this.insertData = function(tableName,dataToInsert){
         let sqlQuery = 'INSERT INTO ';
         sqlQuery += tableName + ' (';
@@ -89,6 +89,30 @@ function dbOperations(dataBaseName){
             }
         }
         return db.prepare(sqlQuery).run(parameters);
+    }
+
+    this.selectAllProducts = function(dataObject){
+        sqlQuery = 'SELECT DISTINCT producer,name FROM products';
+        if(Object.keys(dataObject).length > 0){
+            sqlQuery += ' where ';
+            let keys = Object.keys(dataObject);
+            let keysLength = keys.length;
+            for(let i=0;i<keysLength;i++){
+                if(typeof dataObject[keys[i]] === 'string'){
+                    sqlQuery += (keys[i] + '=' + "'" + dataObject[keys[i]] + "'");
+                }else{
+                    sqlQuery += (keys[i] + '=' + dataObject[keys[i]]);
+                }
+                if(i != keysLength - 1){
+                    sqlQuery += ' and ';
+                }
+            }
+        }
+        return db.prepare(sqlQuery).all();
+    }
+
+    this.makeSelection = function(sqlQuery){
+        return db.prepare(sqlQuery).all();
     }
     
     this.deleteData = function(tableName,parameters){

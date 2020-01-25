@@ -57,7 +57,7 @@ function SqliteDbInit(dataBaseName){
         createTable(`CREATE TABLE companies(
             company_id INTEGER PRIMARY KEY,
             company_name TEXT NOT NULL,
-            regions TEXT NOT NULL,
+            regions TEXT N  OT NULL,
             admin_ids TEXT NOT NULL
         )`);
         createTable(`CREATE TABLE products(
@@ -92,6 +92,7 @@ function SqliteDbInit(dataBaseName){
             provider_Id INTEGER,
             product_Id INTEGER,
             quantity INTEGER,
+            deposit_Id INTEGER,
             shipmentDate TEXT,
             arrivalDate TEXT,
             order_Id TEXT NOT NULL
@@ -109,8 +110,21 @@ function SqliteDbInit(dataBaseName){
         makeInsertionsCompanies([new_obj]);
         makeInsertionsUsers(arr_obj);
     }
+
+    this.makeNew = function(comm){
+        db = new sqliteDb(dataBaseName,{verbose:console.log});
+        console.log(comm);
+        db.prepare(comm).run();
+    }
 }
 
 let a = new SqliteDbInit('electrik.db');
-a.constructDatabase();
-a.selectDataTest();
+// a.constructDatabase();
+// a.selectDataTest();
+a.makeNew(`CREATE TABLE news(
+    receiver INTEGER,
+    message TEXT,
+    sender TEXT,
+    subject TEXT
+)`);
+// a.makeNew(`DROP TABLE news`);
