@@ -20,11 +20,31 @@ function Server(){
     //GET
 
     app.get('/products/all',(req,res)=>{
-        res.send(requestInfo.selectFromProducts(req.body));
+        console.log(req.query);
+        let keys = Object.keys(req.query);
+        let sqlDemand = 'SELECT * FROM products';
+        if(keys.length > 0){
+            sqlDemand += ' WHERE ';
+            let f = [];
+            for(let i=0;i<keys.length/3;i++){
+                sqlDemand += req.query[('f'+i+1)] + ' ' + req.query[('o'+i+1)] + ' ' + req.query[('v'+i+1)];
+                if(i < (keys.length/3) - 1){
+                    sqlDemand += ' AND ';
+                }
+            }
+        }
+        res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
     app.get('/deposits/all',(req,res)=>{
-        res.send(requestInfo.selectFrom('deposits',req.body));
+        // res.send(requestInfo.selectFrom('deposits',req.body));
+        let tok = req.headers.authorization.split(' ')[1];
+        let usrData = requestInfo.selectFrom({token:tok});
+        if(usrData.data[0].title === 'General'){
+            res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id}));
+        }else{
+            res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id,location:usrData.data[0].location}));
+        }
     });
 
     app.get('/companies/all',(req,res)=>{
@@ -89,7 +109,13 @@ function Server(){
     });
 
     app.post('/orders/register',(req,res)=>{
-        res.send(requestInfo.insertInto('orders',[req.body]));
+        // res.send(requestInfo.insertInto('orders',[req.body]));
+        // res.send(requestInfo.create(req.headers.)
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.send(requestInfo.createOrder(req.headers.authorization.split(' ')[1],req.body));
+        }else{
+            res.send({status:'Invalid token!'});
+        }
     });
 
     //PUT
