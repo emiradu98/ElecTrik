@@ -1,2 +1,0 @@
-This is the directory where we'll keep all files related with the front 
-end of the web app.

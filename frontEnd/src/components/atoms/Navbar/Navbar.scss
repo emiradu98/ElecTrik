@@ -1,0 +1,26 @@
+.nav {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  padding-top: 1rem;
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding-bottom: 1rem;
+}
+
+.nav__link {
+  cursor: pointer;
+  margin-right: 20px;
+  font-size: 1.8rem;
+
+  &:hover {
+    color: #808080;
+  }
+
+  &.--active {
+    border-bottom: solid .1rem #808080;
+  }
+}

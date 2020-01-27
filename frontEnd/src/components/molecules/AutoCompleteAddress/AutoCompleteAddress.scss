@@ -1,0 +1,11 @@
+@import '../../../scss/base.scss';
+
+.map__container {
+  width: 100%;
+  height: 30rem;
+  margin: 1rem;
+
+  > * {
+    height: inherit;
+  }
+}

@@ -1,31 +1,44 @@
-let webpackMerge = require('webpack-merge');
+var path = require('path');
+var webpack = require('webpack');
 
-let HTMLWebpackPlugin = require('html-webpack-plugin');
-let CopyWebpackPlugin = require('copy-webpack-plugin');
-
-module.exports = ({mode}) => {
-    return webpackMerge({
-        entry: ['./src/app.js'],
-        devServer: {
-            historyApiFallback: true,
+module.exports = {
+  entry: [
+    'webpack-dev-server/client?http://localhost:1337',
+    'webpack/hot/dev-server',
+    './src/index'
+  ],
+  output: {
+    path: __dirname,
+    filename: 'bundle.js',
+    publicPath: '/static/'
+  },
+  module: {
+    loaders: [
+      {
+        test: /\.js$/,
+        loaders: ['babel-loader'],
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.scss$/,
+        loader: 'style-loader!css-loader!sass-loader?sourceMap'
+      },
+      {
+        test: /\.css$/,
+        loader: 'style-loader!css-loader?sourceMap'
+      },
+      {
+        test: /\.(jpg|png)$/,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[hash].[ext]'
         },
-        plugins: [
-            new HTMLWebpackPlugin({
-                template: 'index.html',
-                minify: {
-                    removeComments: true,
-                    collapseWhitespace: true
-                }
-            }),
-            new CopyWebpackPlugin(
-                [
-                    {
-                        from: './src/assets/',
-                        to: 'assets/'
-                    }
-                ]
-            )
-        ],
-
-    }, require(`./build-utils/webpack.${mode}`))
-}
+        include: path.join(__dirname, 'src')
+      }
+    ]
+  },
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin()
+  ]
+};

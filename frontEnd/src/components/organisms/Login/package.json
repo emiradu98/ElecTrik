@@ -1,0 +1,5 @@
+{
+  "name": "Login",
+  "private": false,
+  "main": "Login.js"
+}

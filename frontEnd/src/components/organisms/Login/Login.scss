@@ -1,0 +1,42 @@
+
+
+.form {
+  justify-content: center;
+  max-width: 400px;
+  align-self: center;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  height: calc(100vh - 100px);
+}
+
+.formButton {
+  background: #B9C1CB;
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  align-self: center;
+  margin-top: 20px;
+  min-width: 200px;
+
+  &:hover {
+    background-color: #F39791;
+  }
+}
+
+.link {
+  align-self: center;
+  margin-top: 15px;
+
+  & a {
+    color: #808080;
+    outline: none;
+
+    &:hover {
+      color: #F39791;
+    }
+  }
+}

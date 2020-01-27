@@ -1,0 +1,17 @@
+
+.button {
+  background: #B9C1CB;
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  padding: 10px 20px 10px 20px;
+  color: #FFFFFF;
+  align-self: center;
+  margin-top: 20px;
+  min-width: 200px;
+
+  &:hover {
+    background-color: #F39791;
+  }
+}

@@ -1,0 +1,24 @@
+
+.form {
+  justify-content: center;
+  max-width: 400px;
+  align-self: center;
+  margin: auto;
+  display: flex;
+  flex-flow: column;
+  height: calc(100vh - 100px);
+}
+
+.link {
+  align-self: center;
+  margin-top: 15px;
+
+  & a {
+    color: #808080;
+    outline: none;
+
+    &:hover {
+      color: #F39791;
+    }
+  }
+}

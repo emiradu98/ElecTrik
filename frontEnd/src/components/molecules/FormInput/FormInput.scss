@@ -1,0 +1,29 @@
+.formInput {
+  display: flex;
+  flex-flow: column;
+  margin-top: 15px;
+
+  & input {
+    padding: 10px;
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 400px;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #C5C5C5;
+    transition: 0.5s ease;
+
+    & .error {
+      color: red;
+    }
+
+    &:hover {
+      background-color: #F6F6F6;
+      border-color: #B9C1CB;
+    }
+  }
+
+  & label {
+    font-size: 13px;
+  }
+}

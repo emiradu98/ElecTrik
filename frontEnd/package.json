@@ -1,32 +1,60 @@
 {
-  "name": "electrik-frontend",
+  "name": "electrik",
   "version": "1.0.0",
-  "description": "A battery and energy platform",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "webpack": "webpack",
-    "webpack-dev-server": "webpack-dev-server",
-    "dev": "npm run webpack-dev-server -- --env.mode development",
-    "prod": "rm -rf dist/ && npm run webpack -- --env.mode production"
+    "start": "node server.js",
+    "lint": "eslint src/**",
+    "lint:fix": "eslint src/** --fix",
+    "test": "jest --verbose",
+    "test:watch": "npm test -- --watch",
+    "test:coverage": "jest --coverage"
   },
-  "author": "Emilian Radu & George Badita",
-  "license": "ISC",
+  "author": "Badita George & Radu Emilian",
+  "license": "Facultatea de Informatica Iasi",
+  "dependencies": {},
   "devDependencies": {
-    "browser-sync": "^2.26.7",
-    "node-sass": "^4.13.0",
-    "npm-run-all": "^4.1.5",
-    "onchange": "^6.1.0",
-    "webpack": "^4.41.5",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.10.1",
-    "webpack-merge": "^4.2.2"
+    "babel-core": "^6.23.1",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^19.0.0",
+    "babel-loader": "^6.3.2",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "css-loader": "^0.26.1",
+    "eslint": "^3.11.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-babel": "^4.0.1",
+    "eslint-plugin-promise": "^3.4.2",
+    "eslint-plugin-standard": "^2.0.1",
+    "file-loader": "^0.10.0",
+    "http-server": "^0.9.0",
+    "jest": "^19.0.0",
+    "node-sass": "^4.5.0",
+    "sass-loader": "^6.0.1",
+    "sinon": "^1.17.7",
+    "style-loader": "^0.13.1",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.3.0"
   },
-  "dependencies": {
-    "copy-webpack-plugin": "^5.1.1",
-    "express": "^4.17.1",
-    "html-webpack-plugin": "^3.2.0",
-    "leaflet": "^1.6.0",
-    "mini-css-extract-plugin": "^0.9.0",
-    "replace-url-html-webpack-plugin": "^1.0.7"
+  "jest": {
+    "unmockedModulePathPatterns": [],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|scss)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "transform": {
+      ".*": "<rootDir>/node_modules/babel-jest"
+    },
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    },
+    "coverageDirectory": "<rootDir>/coverage",
+    "collectCoverage": true
   }
 }
