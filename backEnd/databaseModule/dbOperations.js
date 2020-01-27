@@ -92,7 +92,7 @@ function dbOperations(dataBaseName){
     }
 
     this.selectAllProducts = function(dataObject){
-        sqlQuery = 'SELECT DISTINCT producer,name FROM products';
+        sqlQuery = 'SELECT DISTINCT producer,name,price FROM products';
         if(Object.keys(dataObject).length > 0){
             sqlQuery += ' where ';
             let keys = Object.keys(dataObject);

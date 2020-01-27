@@ -85,11 +85,41 @@ function userOperations(){
         return token;
     }
 
+    function createOrder(tok,dataObject){
+        let selectedData = dataBase.selectData('users',{token:tok});
+        let prData = dataBase.selectData('products',{id:dataObject.product_Id});
+        if(selectedData[0].company_id !== dataObject.provider_Id){
+            // dataBase.updateData('products',{value:{stock:prData.stock - dataObject.quantity},where:{id:dataObject.product_Id}});
+            dataBase.insertData('orders',dataObject);
+        }
+        return {status:'Orderd waiting to be processed!'};
+    }
+
+    function acceptOrder(tok,dataObject){
+        let selectedData = dataBase.selectData('users',{token:tok});
+        let prData = dataBase.selectData('products',{company_id:selectedData[0].company_id,deposit_id:dataObject.deposit_Id});
+        dataBase.updateData('orders',{value:{isProcessed:1},where:{order_Id:dataObject.order_Id}});
+        dataBase.updateData('products',{value:{stock:prData[0].stock - dataObject.quantity},where:{id:prData[0].id}});
+        return {status:'Order processed!'};
+    }
+
+    function listOrders(tok){
+        let selectedData = dataBase.selectData('users',{token:tok});
+        let deposit = dataBase.selectData('deposits',{company_id:selectedData[0].company_id,location:selectedData[0].location});
+        let queue = dataBase.selectData('orders',{isProcessed:0,provider_Id:selectedData[0].company_id,deposit_Id:deposit[0].id});
+        return {status:'Ok',data:queue};
+    }
+
+    function createPayment(tok){
+        // let selectedData = dataBase.selectData('users',{token:tok});
+
+    }
+
     function stockSelect(token,dataObject){
         let selectData = dataBase.makeSelection('SELECT title,location,company_id FROM users WHERE token=' + "'" + token + "'");
         if(selectData[0].title === 'General'){
             let keys = Object.keys(dataObject);
-            let sqlDemand = 'SELECT id,name,producer,stock,deposi_id FROM products WHERE company_id=' + selectData.company_id;
+            let sqlDemand = 'SELECT id,name,producer,stock,deposit_id FROM products WHERE company_id=' + selectData[0].company_id;
             if(keys.length > 0){
                 if(dataObject['name'] !== undefined){
                     sqlDemand += ' and name=' + "'" + dataObject['name'] + "'";
@@ -99,7 +129,7 @@ function userOperations(){
                 }
             }
             let selection = dataBase.makeSelection(sqlDemand);
-            let depos = dataBase.makeSelection('SELECT * FROM deposits WHERE company_id=' + selectData.company_id);
+            let depos = dataBase.makeSelection('SELECT * FROM deposits WHERE company_id=' + selectData[0].company_id);
             for(let i=0;i<depos.length;i++){
                 for(let j=0;j<selection.length;j++){
                     if(depos[i].id === selection[j].deposit_id){
@@ -110,8 +140,8 @@ function userOperations(){
             return {status:'Ok',data:selection};
         }else{
             let keys = Object.keys(dataObject);
-            let depo = dataBase.makeSelection('SELECT id,location FROM deposits WHERE company_id=' + selectData.company_id + ' and location=' + "'" + selectData.location + "'");
-            let sqlDemand = 'SELECT id,name,producer,stock FROM products WHERE deposit_id=' + depo.id;
+            let depo = dataBase.makeSelection('SELECT id,location FROM deposits WHERE company_id=' + selectData[0].company_id + ' and location=' + "'" + selectData[0].location + "'");
+            let sqlDemand = 'SELECT id,name,producer,stock,deposit_id FROM products WHERE deposit_id=' + depo[0].id;
             if(keys.length > 0){
                 if(dataObject['name'] !== undefined){
                     sqlDemand += ' and name=' + "'" + dataObject['name'] + "'";
@@ -122,7 +152,7 @@ function userOperations(){
             }
             let selection = dataBase.makeSelection(sqlDemand);
             for(let i=0;i<selection.length;i++){
-                selection[i].location = depo.location;
+                selection[i].location = depo[0].location;
             }
             return {status:'Ok',data:selection};
         }
@@ -227,6 +257,20 @@ function userOperations(){
         }
     }
 
+    function executeQuerySelect(query){
+        let selection;
+        try{
+            selection = dataBase.makeSelection(query);
+        }catch(err){
+            return {status:err};
+        }
+        if(selection.length > 0){
+            return {status:'Found',data:selection};
+        }else{
+            return {status:'Not found!'};
+        }
+    }
+
     function find(tableName,dataObject){
         let selectedData;
         try{
@@ -259,6 +303,8 @@ function userOperations(){
         insertInto:insertInto,
         selectFromProducts:selectFromProducts,
         stockSelect:stockSelect,
+        createOrder:createOrder,
+        executeQuerySelect:executeQuerySelect,
         find:find
     };
 }

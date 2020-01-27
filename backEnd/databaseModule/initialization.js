@@ -87,6 +87,7 @@ function SqliteDbInit(dataBaseName){
         )`);
         createTable(`CREATE TABLE orders(
             type TEXT NOT NULL,
+            processed INTEGER,
             isDelivered INTEGER,
             client_Id INTEGER,
             provider_Id INTEGER,
@@ -121,10 +122,24 @@ function SqliteDbInit(dataBaseName){
 let a = new SqliteDbInit('electrik.db');
 // a.constructDatabase();
 // a.selectDataTest();
-a.makeNew(`CREATE TABLE news(
-    receiver INTEGER,
-    message TEXT,
-    sender TEXT,
-    subject TEXT
+// a.makeNew(`CREATE TABLE news(
+//     receiver INTEGER,
+//     message TEXT,
+//     sender TEXT,
+//     subject TEXT
+// )`);
+a.makeNew(`CREATE TABLE orders(
+    type TEXT NOT NULL,
+    isProcessed INTEGER,
+    isDelivered INTEGER,
+    client_Id INTEGER,
+    provider_Id INTEGER,
+    product_Id INTEGER,
+    quantity INTEGER,
+    deposit_Id INTEGER,
+    shipmentDate TEXT,
+    arrivalDate TEXT,
+    order_Id INTEGER PRIMARY KEY
 )`);
+// a.makeNew(`DROP TABLE orders`);
 // a.makeNew(`DROP TABLE news`);
