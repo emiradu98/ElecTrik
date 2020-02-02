@@ -25,25 +25,58 @@ function Server(){
         let sqlDemand = 'SELECT * FROM products';
         if(keys.length > 0){
             sqlDemand += ' WHERE ';
-            let f = [];
-            for(let i=0;i<keys.length/3;i++){
-                sqlDemand += req.query[('f'+i+1)] + ' ' + req.query[('o'+i+1)] + ' ' + req.query[('v'+i+1)];
-                if(i < (keys.length/3) - 1){
-                    sqlDemand += ' AND ';
+            // let f = [];
+            console.log((keys.length)/3,req.query[('f'+(0+1))]);
+            for(let i=0;i<parseInt(keys.length/3);i++){
+                // sqlDemand += req.query[('f'+(i+1))] + ' ' + req.query[('o'+(i+1))] + ' ' + req.query[('v'+(i+1))];
+                sqlDemand += req.query[('f'+(i+1))] + ' ' + req.query[('o'+(i+1))] + ' ';
+                if(isNaN(req.query[('v'+(i+1))]) === true){
+                    sqlDemand += "'" + req.query[('v'+(i+1))] + "'";
+                    if(i < parseInt((keys.length/3)) - 1){
+                        if(req.query[('f'+(i+1))] === req.query[('f'+(i+2))]){
+                            sqlDemand += ' OR ';
+                        }else{
+                            sqlDemand += ' AND ';
+                        }
+                    }
+                }else{
+                    sqlDemand += + req.query[('v'+(i+1))];
+                    if(i < parseInt((keys.length/3)) - 1){
+                        sqlDemand += ' AND ';
+                    }
                 }
             }
         }
+        console.log(sqlDemand);
         res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
     app.get('/deposits/all',(req,res)=>{
         // res.send(requestInfo.selectFrom('deposits',req.body));
         let tok = req.headers.authorization.split(' ')[1];
-        let usrData = requestInfo.selectFrom({token:tok});
+        let usrData = requestInfo.selectFrom('users',{token:tok});
+        if(usrData.status === 'Not found!'){
+            res.send(usrData);
+            return;
+        }
         if(usrData.data[0].title === 'General'){
             res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id}));
         }else{
-            res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id,location:usrData.data[0].location}));
+            //
+            let sqlDemand = 'SELECT * FROM DEPOSITS WHERE company_id=' + usrData.data[0].company_id + ' ';
+            let keys = Object.keys(req.query);
+            if(parseInt(keys.length/3) > 0){
+                sqlDemand += 'AND ';
+            }
+            for(let i=0;i<parseInt(keys.length/3);i++){
+                sqlDemand += req.query[('f'+(i+1))] + ' ' + req.query[('o'+(i+1))] + " '" + req.query[('v'+(i+1))] + "'";
+                if(i<parseInt(keys.length/3) - 1){
+                    sqlDemand += ' AND ';
+                }
+            }
+            console.log(sqlDemand);
+            // res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id,location:usrData.data[0].location}));
+            res.send(requestInfo.executeQuerySelect(sqlDemand));
         }
     });
 
