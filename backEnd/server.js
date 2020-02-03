@@ -80,8 +80,14 @@ function Server(){
         }
     });
 
+    //aici, nu punem operator, nu exista decat campuri care pot avea relatia de identitate
     app.get('/companies/all',(req,res)=>{
-        res.send(requestInfo.selectFrom('companies',req.body));
+        let keys = Object.keys(req.query);
+        let obj = {};
+        for(let i=0;i<parseInt(keys.length/3);i++){
+            obj[req.query['f'+(i+1)]] = req.query['v'+(i+1)];
+        }
+        res.send(requestInfo.selectFrom('companies',obj));
     });
 
     app.get('/products/stocks',(req,res)=>{
@@ -89,14 +95,25 @@ function Server(){
             res.send({status:'You must be logged in!'});
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
-            res.send(requestInfo.stockSelect(req.headers.authorization.split(' ')[1],req.body));
+            //de asemenea, doar egal
+            let obj = {};
+            keys = Object.keys(req.query);
+            for(let i=0;i<parseInt(keys.length/3);i++){
+                obj[req.query['f'+(i+1)]] = req.query['v'+(i+1)];
+            }
+            res.send(requestInfo.stockSelect(req.headers.authorization.split(' ')[1],obj));
         }else{
             res.send({status:'Invalid token!'});
         }
     });
 
     app.get('/users/all',(req,res)=>{
-        res.send(requestInfo.selectFrom('users',req.body));
+        let obj = {};
+        let keys = Object.keys(req.query);
+        for(let i=0;i<parseInt(keys.length/3);i++){
+            obj[req.query['f'+(i+1)]] = req.query['v'+(i+1)];
+        }
+        res.send(requestInfo.selectFrom('users',obj));
     });
 
     app.get('/payment/all',(req,res)=>{
@@ -104,7 +121,25 @@ function Server(){
     });
 
     app.get('/orders/all',(req,res)=>{
-        res.send(requestInfo.selectFrom('orders',req.body));
+        let obj = {};
+        let keys = Object.keys(req.query);
+        let sqlDemand = 'SELECT * FROM orders';
+        if(parseInt(keys.length/3)>0){
+            sqlDemand += ' WHERE ';
+        }
+        for(let i=0;i<parseInt(keys.length/3);i++){
+            sqlDemand += req.query['f'+(i+1)] + req.query['o'+(i+1)];
+            if(isNaN(req.query['v'+(i+1)]) === true){
+                sqlDemand += "'" + req.query['v'+(i+1)] + "'";
+            }else{
+                sqlDemand += req.query['v'+(i+1)];
+            }
+            if((i+1)<parseInt(keys.length/3)){
+                sqlDemand += ' AND ';
+            }
+        }
+        // res.send(requestInfo.selectFrom('orders',req.body));
+        res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
     //POST
