@@ -116,8 +116,10 @@ function userOperations(){
     }
 
     function stockSelect(token,dataObject){
-        let selectData = dataBase.makeSelection('SELECT title,location,company_id FROM users WHERE token=' + "'" + token + "'");
-        if(selectData[0].title === 'General'){
+        let selectData = dataBase.makeSelection('SELECT * FROM users WHERE token=' + "'" + token + "'");
+        let checkData = dataBase.makeSelection('SELECT * FROM companies WHERE owner_id=' + selectData[0].user_id);
+        console.log(checkData[0]);
+        if(checkData !== undefined){
             let keys = Object.keys(dataObject);
             let sqlDemand = 'SELECT id,name,producer,stock,deposit_id FROM products WHERE company_id=' + selectData[0].company_id;
             if(keys.length > 0){
@@ -160,7 +162,8 @@ function userOperations(){
 
     function announceClients(tok){
         let selectData = dataBase.selectData('users',{token:tok});
-        if(selectData[0].title === 'General'){
+        let checkData = dataBase.selectData('companies',{owner_id:selectData[0].user_id});
+        if(checkData !== undefined){
             let sqlDemand = 'SELECT DISTINCT client_Id,product_Id FROM orders WHERE provider_Id='+selectData[0].company_id;
             let selection = dataBase.makeSelection(sqlDemand);
             let companyData = dataBase.makeSelection('SELECT company_name FROM companies WHERE company_id=' + selectData[0].company_id);
@@ -177,7 +180,7 @@ function userOperations(){
             }
             return {status:'Clients have been notified!'};
         }else{
-            return {status:'Only General can do this operation!'};
+            return {status:'Only Owner can do this operation!'};
         }
     }
 
