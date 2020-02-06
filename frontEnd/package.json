@@ -13,7 +13,9 @@
   },
   "author": "Badita George & Radu Emilian",
   "license": "Facultatea de Informatica Iasi",
-  "dependencies": {},
+  "dependencies": {
+    "leaflet": "^1.6.0"
+  },
   "devDependencies": {
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",

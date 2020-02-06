@@ -2,57 +2,55 @@ import {FormInput} from '../FormInput/FormInput';
 import {Button} from '../Button/Button';
 
 export default class Form {
-  constructor ({
-    inputArray = [],
-    formTitle = '',
-    onSubmit
-  }) {
-    this.component = document.createElement('div');
-    const form = document.createElement('form');
+    constructor({
+                    inputArray = [],
+                    formTitle = '',
+                    btn = {},
+                    onSubmit = () => {
+                    },
+                }) {
+        this.inputs = []
+        this.component = document.createElement('div');
+        this.form = document.createElement('form');
 
-    const formTitle = document.createElement('h2');
-    formTitle.innerText = 'Register';
+        this.formTitle = document.createElement('h2');
+        this.formTitle.innerText = formTitle;
 
-    const emailInput = new FormInput({
-      name: 'email',
-      labelName: 'Email',
-      id: 'email',
-      placeholder: 'Enter email',
-      type: 'text',
-      onChange: () => {
-      }
-    });
+        this.form.appendChild(this.formTitle);
 
-    const passwordInput = new FormInput({
-      name: 'password',
-      labelName: 'Password',
-      id: 'password',
-      placeholder: 'Enter password',
-      type: 'password',
-      onChange: () => {
-      }
-    });
+        inputArray.map((inp) => {
+            const appendingInput = new FormInput({
+                name: inp.name,
+                labelName: inp.labelName,
+                id: inp.id,
+                placeholder: inp.placeholder,
+                type: inp.type,
+                onChange: () => {
+                },
+                options: inp.options
+            })
+            this.inputs.push(appendingInput)
+            this.form.appendChild(appendingInput.innerHTML())
+        })
 
-    const loginButton = new Button({
-      type: 'button',
-      innerText: 'Register',
-      onClick: () => alert(passwordInput.getValue())
-    });
+        this.button = new Button({
+            type: 'button',
+            innerText: btn.innerText,
+            onClick: onSubmit
+        });
 
-    const registerDiv = document.createElement('div');
-    registerDiv.className = 'link';
-    const registerText = document.createElement('a');
-    registerText.innerText = 'Don\'t have an account?';
-    registerText.href = '#register';
-    registerDiv.appendChild(registerText);
+        this.form.appendChild(this.button.innerHTML());
+        this.component && this.component.appendChild(this.form);
+    }
 
-    form.appendChild(formTitle);
-    form.appendChild(emailInput.innerHTML());
-    form.appendChild(passwordInput.innerHTML());
-    form.appendChild(loginButton.innerHTML());
-    form.appendChild(registerDiv);
-    this.component.appendChild(form);
+    innerHTML() {
+        return this.component;
+    }
 
-  }
+    getValues() {
+        let values = {}
+        this.inputs.forEach(inp => values[inp.input.name] = inp.input.value)
+        return values
+    }
 
 }
