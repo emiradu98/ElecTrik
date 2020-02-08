@@ -168,7 +168,7 @@ function Server(){
     //POST
 
     app.post('/auth/register',(req,res)=>{
-        if(req.body.invite === undefined){
+        if(req.body.invite !== undefined){
             let selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
             if(selectData === undefined){
                 res.send({status:'Invalid invitation!'});
