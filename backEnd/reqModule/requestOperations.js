@@ -142,7 +142,7 @@ function userOperations(){
             return {status:'Ok',data:selection};
         }else{
             let keys = Object.keys(dataObject);
-            let depo = dataBase.makeSelection('SELECT id,location FROM deposits WHERE company_id=' + selectData[0].company_id + ' and location=' + "'" + selectData[0].location + "'");
+            let depo = dataBase.makeSelection("SELECT id,location FROM deposits WHERE admin_ids LIKE '%" + selectData[0].user_id + "%'");
             let sqlDemand = 'SELECT id,name,producer,stock,deposit_id FROM products WHERE deposit_id=' + depo[0].id;
             if(keys.length > 0){
                 if(dataObject['name'] !== undefined){
@@ -182,6 +182,27 @@ function userOperations(){
         }else{
             return {status:'Only Owner can do this operation!'};
         }
+    }
+
+    function isOwner(tokenObject){
+        let userData = dataBase.selectData('users',tokenObject);
+        let companyData = dataBase.selectData('companies',{owner_id:userData[0].user_id});
+        if(companyData !== undefined){
+            return {status:'Owner'};
+        }else{
+            return {status:'Employee'};
+        }
+    }
+
+    function getAllDepositLocations(tokenObject){
+        let userData = dataBase.selectData('users',tokenObject);
+        let companyData = dataBase.selectData('companies',{owner_id:userData[0].user_id});
+        let locations = dataBase.makeSelection('SELECT location FROM deposits WHERE company_id=' + companyData[0].company_id);
+        let arr = [];
+        for(let el of locations){
+            arr.push(el.location);
+        }
+        return {status:'Ok',data:arr};
     }
 
     function loginUser(dataObject){
@@ -308,6 +329,8 @@ function userOperations(){
         stockSelect:stockSelect,
         createOrder:createOrder,
         executeQuerySelect:executeQuerySelect,
+        isOwner:isOwner,
+        getAllDepositLocations:getAllDepositLocations,
         find:find
     };
 }
