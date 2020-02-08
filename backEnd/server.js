@@ -154,7 +154,7 @@ function Server(){
 
     app.post('/auth/logout',(req,res)=>{
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
-            res.send(requestInfo.logoutUser(req.body));
+            res.send(requestInfo.logoutUser({token:req.headers.authorization.split(' ')[1]}));
         }else{
             res.send({status:'Invalid token!'});
         }
@@ -211,7 +211,7 @@ function Server(){
     });
 
     app.put('/products/update',(req,res)=>{
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.updateData('products',req.body));
         }
     });
