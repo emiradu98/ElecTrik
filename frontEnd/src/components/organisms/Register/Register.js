@@ -1,15 +1,13 @@
 import Form from '../../molecules/Form/Form';
-import {API_URL} from "../../../../static/constants/constants";
 import {continents, countries} from "countries-list";
 import _ from 'lodash'
+import {register} from "../../../repositories/AuthRepository/AuthActions";
 
 require('./Register.scss');
 
 
 export default class Register {
     constructor() {
-        let data = {}
-
         this.registerForm = new Form({
                 inputArray: [
                     {
@@ -100,17 +98,7 @@ export default class Register {
                     },
                 ],
                 formTitle: 'Register',
-                onSubmit: async () => {
-                    data = this.registerForm.getValues();
-                    data.auth_token = '';
-                    data.token = null;
-                    data.location = 'botosani';
-                    await fetch(`${API_URL}/auth/register`, {
-                        method: 'post',
-                        headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify(data)
-                    })
-                }
+                onSubmit: ()=>register(this.registerForm.getValues())
 
                 ,
                 btn: {

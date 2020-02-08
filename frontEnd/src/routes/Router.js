@@ -7,8 +7,9 @@ export default class Router {
     if (hash.startsWith('#')) hash = hash.replace('#', '');
     if (hash) location.hash = `#${hash}`;
     if (params) location.hash += `?id=${params.id}`;
-
     const page = ROUTES[getHash(hash)];
+    console.log(document.cookie)
+
     if (!page) {
       location.hash = '';
       return page.render();

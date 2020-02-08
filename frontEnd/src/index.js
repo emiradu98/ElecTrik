@@ -1,5 +1,8 @@
+import {autoLogin} from "./repositories/AuthRepository/AuthActions";
+import Router from './routes/Router';
+
 require('./scss/base.scss');
 
-import Router from './routes/Router';
+autoLogin()
 
 Router.go(location.hash);
