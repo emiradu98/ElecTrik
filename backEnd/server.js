@@ -116,6 +116,29 @@ function Server(){
         res.send(requestInfo.selectFrom('users',obj));
     });
 
+    app.get('/me/statut',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            //de asemenea, doar egal
+            res.send(requestInfo.isOwner({token:req.headers.authorization.split(' ')[1]}));
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+    app.get('/me/deposits',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.send(requestInfo.getAllDepositLocations({token:req.headers.authorization.split(' ')[1]}));
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    })
+
     app.get('/payment/all',(req,res)=>{
         
     });
@@ -145,6 +168,12 @@ function Server(){
     //POST
 
     app.post('/auth/register',(req,res)=>{
+        let selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
+        if(selectData === undefined){
+            res.send({status:'Invalid invitation!'});
+        }
+        req.body.company_id = selectData.data[0].company_id;
+        delete req.body.invite;
         res.send(requestInfo.register('users',req.body)); 
     });
 
