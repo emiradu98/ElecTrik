@@ -1,5 +1,4 @@
 
-
 .form {
   justify-content: center;
   max-width: 400px;
@@ -8,23 +7,6 @@
   display: flex;
   flex-flow: column;
   height: calc(100vh - 100px);
-}
-
-.formButton {
-  background: #B9C1CB;
-  outline: none;
-  border: none;
-  border-radius: 20px;
-  cursor: pointer;
-  padding: 10px 20px 10px 20px;
-  color: #FFFFFF;
-  align-self: center;
-  margin-top: 20px;
-  min-width: 200px;
-
-  &:hover {
-    background-color: #F39791;
-  }
 }
 
 .link {
@@ -39,4 +21,17 @@
       color: #F39791;
     }
   }
+}
+
+#map {
+  height: 500px;
+  width: 500px;
+}
+
+.centered-form{
+  align-self: center;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  height: calc(100vh - 100px);
 }

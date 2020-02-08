@@ -27,3 +27,11 @@
   height: 500px;
   width: 500px;
 }
+
+.centered-form{
+  align-self: center;
+  width: 100%;
+  justify-content: center;
+  display: flex;
+  height: calc(100vh - 100px);
+}

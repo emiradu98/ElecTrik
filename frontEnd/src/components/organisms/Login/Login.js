@@ -1,67 +1,58 @@
-import AuthRepository from '../../../repositories/AuthRepository';
-import {regexEmail} from '../../../../static/constants/constants';
+import {API_URL, regexEmail} from '../../../../static/constants/constants';
+import Form from "../../molecules/Form/Form";
 
 require('./Login.scss');
 
 export default class Login {
   constructor () {
-    this.PersonRepository = AuthRepository;
+    let data = {}
 
-    this.data = {};
+    this.registerForm = new Form({
+          inputArray: [
+            {
+              name: 'email',
+              labelName: 'Email',
+              id: 'email',
+              required: true,
+
+              placeholder: 'Insert your email',
+              type: 'text',
+              onChange: () => {
+              }
+            },
+            {
+              name: 'password',
+              labelName: 'Password',
+              id: 'password',
+              required: true,
+
+              placeholder: 'Type your password',
+              type: 'password',
+              onChange: () => {
+              }
+            },
+          ],
+          formTitle: 'Login',
+          onSubmit: async () => {
+            data = this.registerForm.getValues();
+            const response = await fetch(`${API_URL}/auth/login`, {
+              method: 'post',
+              headers: {'Content-Type': 'application/json'},
+              body: JSON.stringify(data)
+            })
+            console.log(response)
+          }
+          ,
+          btn: {
+            type: 'button',
+            innerText: 'Login'
+
+          }
+        }
+    )
     this.component = document.createElement('div');
-
-    const form = document.createElement('form');
-    const formTitle = document.createElement('h2');
-    formTitle.innerText = 'Login';
-    form.className = 'form';
-    const emailLabel = document.createElement('label');
-    emailLabel.htmlFor = 'email';
-    emailLabel.innerText = 'Email';
-
-    const emailInput = document.createElement('input');
-    emailInput.name = 'email';
-    emailInput.id = 'email';
-
-    const emailDiv = document.createElement('div');
-    emailDiv.appendChild(emailLabel);
-    emailDiv.className = `formInput ${regexEmail.test(emailInput.value) ? 'error' : ''}`;
-    emailDiv.appendChild(emailInput);
-
-    const passwordLabel = document.createElement('label');
-    passwordLabel.htmlFor = 'password';
-    passwordLabel.innerText = 'Password';
-
-    const passwordInput = document.createElement('input');
-    passwordInput.name = 'password';
-    passwordInput.id = 'password';
-
-    const passwordDiv = document.createElement('div');
-    passwordDiv.appendChild(passwordLabel);
-    passwordDiv.className = 'formInput';
-
-    passwordDiv.appendChild(passwordInput);
-
-    const loginButton = document.createElement('button');
-    loginButton.innerText = 'Login';
-    loginButton.type = 'button';
-    loginButton.className = 'formButton';
-    loginButton.addEventListener('click', () => {
-      alert('here');
-    });
-
-    const registerDiv = document.createElement('div');
-    registerDiv.className = 'link';
-    const registerText = document.createElement('a');
-    registerText.innerText = 'Don\'t have an account?';
-    registerText.href = '#register';
-    registerDiv.appendChild(registerText);
-
-    form.appendChild(formTitle);
-    form.appendChild(emailDiv);
-    form.appendChild(passwordDiv);
-    form.appendChild(loginButton);
-    form.appendChild(registerDiv);
-    this.component.appendChild(form);
+    this.component.className = 'centered-form'
+    this.component.appendChild(this.registerForm.innerHTML());
     return this;
   }
 

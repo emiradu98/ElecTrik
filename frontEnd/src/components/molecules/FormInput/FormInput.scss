@@ -8,7 +8,43 @@
     font-size: 12px;
     line-height: 16px;
     max-width: 400px;
+    min-width: 300px;
     border-radius: 5px;
+    outline: none;
+    border: 1px solid #C5C5C5;
+    transition: 0.5s ease;
+
+    & .error {
+      color: red;
+    }
+
+    &:hover {
+      background-color: #F6F6F6;
+      border-color: #B9C1CB;
+    }
+  }
+
+  & label {
+    font-size: 13px;
+  }
+}
+
+.formSelect {
+  display: flex;
+  flex-flow: column;
+  margin-top: 15px;
+
+  & select {
+    padding: 10px;
+    font-size: 12px;
+    line-height: 16px;
+    max-width: 422px;
+    width: 100%;
+    border-radius: 5px;
+    background: #fff;
+    min-width: 300px;
+    box-shadow: none;
+    -webkit-appearance:none;
     outline: none;
     border: 1px solid #C5C5C5;
     transition: 0.5s ease;
