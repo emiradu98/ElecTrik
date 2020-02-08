@@ -165,6 +165,17 @@ function Server(){
         res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
+    app.get('/me',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.send(requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]}));
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
     //POST
 
     app.post('/auth/register',(req,res)=>{
@@ -177,7 +188,8 @@ function Server(){
             delete req.body.invite;
         }else{
             req.body.company_id = 0;
-        } 
+        }
+        res.statusCode = 201;
         res.send(requestInfo.register('users',req.body));
     });
 
@@ -194,18 +206,22 @@ function Server(){
     });
 
     app.post('/companies/register',(req,res)=>{
+        res.statusCode = 201;
         res.send(requestInfo.insertInto('companies',[req.body]));
     });
 
     app.post('/products/register',(req,res)=>{
+        res.statusCode = 201;
         res.send(requestInfo.insertInto('products',[req.body]));
     });
 
     app.post('/deposits/register',(req,res)=>{
+        res.statusCode = 201;
         res.send(requestInfo.insertInto('deposits',[req.body]));
     });
 
     app.post('/payment/register',(req,res)=>{
+        res.statusCode = 201;
         res.send(requestInfo.insertInto('payment',[req.body]));
     });
 
@@ -213,6 +229,7 @@ function Server(){
         // res.send(requestInfo.insertInto('orders',[req.body]));
         // res.send(requestInfo.create(req.headers.)
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.statusCode = 201;
             res.send(requestInfo.createOrder(req.headers.authorization.split(' ')[1],req.body));
         }else{
             res.send({status:'Invalid token!'});
