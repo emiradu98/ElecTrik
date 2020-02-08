@@ -219,7 +219,7 @@ function userOperations(){
             let tokenObject = {
                 'access_token':'<access-token>',
                 'refresh_token':'<refresh-token>',
-                'expires_in':'7200'
+                'expires_in':'7200000'
             };
             let accessToken = oauth2.accessToken.create(tokenObject);
             let token = createToken();

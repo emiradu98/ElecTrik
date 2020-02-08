@@ -165,6 +165,17 @@ function Server(){
         res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
+    app.get('/me',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.send(requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]}));
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
     //POST
 
     app.post('/auth/register',(req,res)=>{
