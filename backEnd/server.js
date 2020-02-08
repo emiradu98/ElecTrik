@@ -168,13 +168,17 @@ function Server(){
     //POST
 
     app.post('/auth/register',(req,res)=>{
-        let selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
-        if(selectData === undefined){
-            res.send({status:'Invalid invitation!'});
-        }
-        req.body.company_id = selectData.data[0].company_id;
-        delete req.body.invite;
-        res.send(requestInfo.register('users',req.body)); 
+        if(req.body.invite === undefined){
+            let selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
+            if(selectData === undefined){
+                res.send({status:'Invalid invitation!'});
+            }
+            req.body.company_id = selectData.data[0].company_id;
+            delete req.body.invite;
+        }else{
+            req.body.company_id = 0;
+        } 
+        res.send(requestInfo.register('users',req.body));
     });
 
     app.post('/auth/login',(req,res)=>{
