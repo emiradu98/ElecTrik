@@ -41,12 +41,25 @@ export const login = async (data) => {
 }
 
 export const autoLogin = async () => {
-    const cookie = document.cookie.split('token=')[1]
-    if(cookie){
-        console.log(cookie)
+    const cookie = document.cookie.split('token=')[1];
+    if (cookie) {
+        const response = await fetch(`${API_URL}/me`, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+        })
+        if (response.status === 200) {
+            const authRepository = AuthRepository;
+            const loginState = authRepository.getState();
+            loginState.isLoggedIn = true;
+            authRepository.updateState(loginState);
+            const json = await response.json();
+            loginState.user = json.data[0];
+            Router.go('list')
+        }
     }
 }
 
-export const logout = async ()=>{
-    
+export const logout = async () => {
+    document.cookie = 'token='
+    console.log(document.cookie)
 }

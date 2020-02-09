@@ -1,4 +1,5 @@
 import AuthRepository from "../../../repositories/AuthRepository";
+import {logout} from "../../../repositories/AuthRepository/AuthActions";
 
 require('./Navbar.scss');
 
@@ -45,7 +46,21 @@ export default class Navbar {
             }
         });
 
+        const lgbtn = document.createElement('div');
+        lgbtn.addEventListener('click', () => logout(''));
+        lgbtn.textContent = 'Logout';
+        lgbtn.classList.add('nav__link');
+
+        if (location.hash === '') {
+            lgbtn.classList.add('--active')
+        }
+        if (location.hash.startsWith('#')) lgbtn.classList.add('--active');
+
+        div.appendChild(lgbtn);
+
         nav.appendChild(div);
+
+
         this.component = nav;
 
         return this;
