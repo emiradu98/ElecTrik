@@ -243,13 +243,120 @@ function Server(){
         }
     });
 
-    app.get('/payment/all',(req,res)=>{
+    app.get('/rut',(req,res)=>{
+        res.send(req.query);
+    });
+
+    app.get('/payment/client',(req,res)=>{
         if(req.headers.authorization === undefined){
             res.statusCode = 401;
             res.send({status:'Need to log in!'});
         }
-        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[0]}) === true){
-            
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{client_Id:userData.data[0].company_id});
+            let selObj = {
+                status:'Ok',
+                data:[]
+            };
+            let keys = Object.keys(req.query);
+            let retData = {
+                status:'Ok',
+                data:[]
+            }
+            let checkObj = {};
+            if(parseInt(keys.length/3)>0){
+                for(let i=0;i<parseInt(keys.length/3);i++){
+                    if(checkObj[req.query['f'+(i+1)]] === undefined){
+                        checkObj[req.query['f'+(i+1)]] = [];
+                    }
+                    checkObj[req.query['f'+(i+1)]].push(req.query['v'+(i+1)]);   
+                }
+            }
+            keys = Object.keys(checkObj);
+            for(let i=0;i<selection.data.length;i++){
+                let okSem = true;
+                for(let j=0;j<keys.length;j++){
+                    let secOk = false;
+                    for(let t=0;t<checkObj[keys[j]].length;t++){
+                        if(isNaN(checkObj[keys[j]][t]) === false){
+                            checkObj[keys[j]][t] = parseInt(checkObj[keys[j]][t]);
+                        }
+                        if(checkObj[keys[j]][t] === selection.data[i][keys[j]]){
+                            secOk = true;
+                            break;
+                        }
+                    }
+                    if(secOk === false){
+                        okSem = false;
+                        break;
+                    }
+                }
+                if(okSem === true){
+                    retData.data.push(selection.data[i]);
+                }
+            }
+            res.statusCode = 200;
+            res.send(retData);
+        }else{
+            res.statusCode = 401;
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+    app.get('/payment/provider',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.statusCode = 401;
+            res.send({status:'Need to log in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{provider_Id:userData.data[0].company_id});
+            let selObj = {
+                status:'Ok',
+                data:[]
+            };
+            let keys = Object.keys(req.query);
+            let retData = {
+                status:'Ok',
+                data:[]
+            }
+            let checkObj = {};
+            if(parseInt(keys.length/3)>0){
+                for(let i=0;i<parseInt(keys.length/3);i++){
+                    if(checkObj[req.query['f'+(i+1)]] === undefined){
+                        checkObj[req.query['f'+(i+1)]] = [];
+                    }
+                    checkObj[req.query['f'+(i+1)]].push(req.query['v'+(i+1)]);   
+                }
+            }
+            keys = Object.keys(checkObj);
+            for(let i=0;i<selection.data.length;i++){
+                let okSem = true;
+                for(let j=0;j<keys.length;j++){
+                    let secOk = false;
+                    for(let t=0;t<checkObj[keys[j]].length;t++){
+                        if(isNaN(checkObj[keys[j]][t]) === false){
+                            checkObj[keys[j]][t] = parseInt(checkObj[keys[j]][t]);
+                        }
+                        if(checkObj[keys[j]][t] === selection.data[i][keys[j]]){
+                            secOk = true;
+                            break;
+                        }
+                    }
+                    if(secOk === false){
+                        okSem = false;
+                        break;
+                    }
+                }
+                if(okSem === true){
+                    retData.data.push(selection.data[i]);
+                }
+            }
+            res.statusCode = 200;
+            res.send(retData);
         }else{
             res.statusCode = 401;
             res.send({status:'Invalid token!'});
