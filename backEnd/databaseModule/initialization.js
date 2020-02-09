@@ -120,7 +120,8 @@ function SqliteDbInit(dataBaseName){
 }
 
 let a = new SqliteDbInit('electrik.db');
-// a.makeNew('ALTER TABLE products ADD img BLOB');
+// a.makeNew('ALTER TABLE companies RENAME admin_ids TO email');
+// a.makeNew('ALTER TABLE companies ADD location TEXT');
 // a.makeNew('ALTER TABLE companies ADD invite TEXT');
 // a.constructDatabase();
 // a.selectDataTest();

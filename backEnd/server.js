@@ -178,6 +178,7 @@ function Server(){
      */
 
     app.get('/users/all',(req,res)=>{
+        console.log('ish');
         let obj = {};
         let keys = Object.keys(req.query);
         for(let i=0;i<parseInt(keys.length/3);i++){
@@ -227,42 +228,176 @@ function Server(){
         }else{
             res.send({status:'Invalid token!'});
         }
-    })
-
-    app.get('/payment/all',(req,res)=>{
-        
     });
 
-    /**
-     * @swagger
-     * /orders/all:
-     *  get:
-     *      description: Use to request all orders
-     *      responses:
-     *          '200':
-     *              description:A succesfull response
-     */
+    app.get('/me/companies',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            let companies = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            res.send(companies);
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+    app.get('/rut',(req,res)=>{
+        res.send(req.query);
+    });
+
+    app.get('/payment/client',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.statusCode = 401;
+            res.send({status:'Need to log in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{client_Id:userData.data[0].company_id});
+            let selObj = {
+                status:'Ok',
+                data:[]
+            };
+            let keys = Object.keys(req.query);
+            let retData = {
+                status:'Ok',
+                data:[]
+            }
+            let checkObj = {};
+            if(parseInt(keys.length/3)>0){
+                for(let i=0;i<parseInt(keys.length/3);i++){
+                    if(checkObj[req.query['f'+(i+1)]] === undefined){
+                        checkObj[req.query['f'+(i+1)]] = [];
+                    }
+                    checkObj[req.query['f'+(i+1)]].push(req.query['v'+(i+1)]);   
+                }
+            }
+            keys = Object.keys(checkObj);
+            for(let i=0;i<selection.data.length;i++){
+                let okSem = true;
+                for(let j=0;j<keys.length;j++){
+                    let secOk = false;
+                    for(let t=0;t<checkObj[keys[j]].length;t++){
+                        if(isNaN(checkObj[keys[j]][t]) === false){
+                            checkObj[keys[j]][t] = parseInt(checkObj[keys[j]][t]);
+                        }
+                        if(checkObj[keys[j]][t] === selection.data[i][keys[j]]){
+                            secOk = true;
+                            break;
+                        }
+                    }
+                    if(secOk === false){
+                        okSem = false;
+                        break;
+                    }
+                }
+                if(okSem === true){
+                    retData.data.push(selection.data[i]);
+                }
+            }
+            res.statusCode = 200;
+            res.send(retData);
+        }else{
+            res.statusCode = 401;
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+    app.get('/payment/provider',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.statusCode = 401;
+            res.send({status:'Need to log in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{provider_Id:userData.data[0].company_id});
+            let selObj = {
+                status:'Ok',
+                data:[]
+            };
+            let keys = Object.keys(req.query);
+            let retData = {
+                status:'Ok',
+                data:[]
+            }
+            let checkObj = {};
+            if(parseInt(keys.length/3)>0){
+                for(let i=0;i<parseInt(keys.length/3);i++){
+                    if(checkObj[req.query['f'+(i+1)]] === undefined){
+                        checkObj[req.query['f'+(i+1)]] = [];
+                    }
+                    checkObj[req.query['f'+(i+1)]].push(req.query['v'+(i+1)]);   
+                }
+            }
+            keys = Object.keys(checkObj);
+            for(let i=0;i<selection.data.length;i++){
+                let okSem = true;
+                for(let j=0;j<keys.length;j++){
+                    let secOk = false;
+                    for(let t=0;t<checkObj[keys[j]].length;t++){
+                        if(isNaN(checkObj[keys[j]][t]) === false){
+                            checkObj[keys[j]][t] = parseInt(checkObj[keys[j]][t]);
+                        }
+                        if(checkObj[keys[j]][t] === selection.data[i][keys[j]]){
+                            secOk = true;
+                            break;
+                        }
+                    }
+                    if(secOk === false){
+                        okSem = false;
+                        break;
+                    }
+                }
+                if(okSem === true){
+                    retData.data.push(selection.data[i]);
+                }
+            }
+            res.statusCode = 200;
+            res.send(retData);
+        }else{
+            res.statusCode = 401;
+            res.send({status:'Invalid token!'});
+        }
+    });
 
     app.get('/orders/all',(req,res)=>{
-        let obj = {};
-        let keys = Object.keys(req.query);
-        let sqlDemand = 'SELECT * FROM orders';
-        if(parseInt(keys.length/3)>0){
-            sqlDemand += ' WHERE ';
+        if(req.headers.authorization === undefined){
+            res.statusCode = 401;
+            res.send({status:'Token required!'});
         }
-        for(let i=0;i<parseInt(keys.length/3);i++){
-            sqlDemand += req.query['f'+(i+1)] + req.query['o'+(i+1)];
-            if(isNaN(req.query['v'+(i+1)]) === true){
-                sqlDemand += "'" + req.query['v'+(i+1)] + "'";
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            let companyData = requestInfo.selectFrom('companies',{company_id:userData.data[0].company_id});
+            let orders;
+            if(requestInfo.isOwner({token:req.headers.authorization.split(' ')[1]}).status === 'Owner'){
+                orders = requestInfo.selectFrom('orders',{client_Id:companyData.data[0].company_id});
             }else{
-                sqlDemand += req.query['v'+(i+1)];
+                let depo = requestInfo.executeQuerySelect("SELECT * FROM deposits WHERE admin_ids LIKE '%" + userData.data[0].user_id + "%'");
+                orders = requestInfo.selectFrom('orders',{client_Id:companyData.data[0].company_id,deposit_Id:depo.data[0].id});
             }
-            if((i+1)<parseInt(keys.length/3)){
-                sqlDemand += ' AND ';
+            let selectObj = {
+                status:'Ok',
+                data:[]
+            };
+            let keys = Object.keys(req.query);
+            if(parseInt(keys.length/2)>0){
+                for(let i=0;i<parseInt(keys.lengt/2);i+=2){
+                    for(let j=0;j<orders.data.length;j++){
+                        if(orders.data[j][req.query['f'+(i+1)]] === req.query['v'+(i+1)]){
+                            selectObj.data.push(orders.data[j]);
+                        }
+                    }
+                }
             }
+            res.statusCode = 200;
+            res.send({status:'Ok',data:selectObj});
+        }else{
+            res.statusCode = 401;
+            res.send({status:'Invalid token!'});
         }
-        // res.send(requestInfo.selectFrom('orders',req.body));
-        res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
     /**
@@ -273,6 +408,9 @@ function Server(){
      *      responses:
      *          '200':
      *              description:A succesfull response
+     *      parameters:
+     *          -   name:token
+     *              description:This is for authentification purpose
      */
 
     app.get('/me',(req,res)=>{
@@ -287,6 +425,19 @@ function Server(){
     });
 
     //POST
+
+    /**
+     * @swagger
+     * /auth/register:
+     *  post:
+     *      summary: Register new user
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/auth/register',(req,res)=>{
         if(req.body.invite !== undefined){

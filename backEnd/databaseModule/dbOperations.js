@@ -135,7 +135,7 @@ let arr_obj = [
 ];
 module.exports = dbOperations;
 // new dbOperations('electrik.db').updateData('companies',{owner_id:3},{company_id:1});
-// console.log(new dbOperations('electrik.db').makeSelection("SELECT * FROM deposits WHERE admin_ids LIKE '%5%'"));
+// console.log(new dbOperations('electrik.db').makeSelection("SELECT * FROM payment"));
 //console.log(typeof new dbOperations('electrik.db').selectData('users')[0]);
 // console.log(new dbOperations('electrik.db').selectMatch('companies',{company_name:'Tec'}));
 //new dbOperations('electrik.db').insertData('users',[arr_obj[0]]);
