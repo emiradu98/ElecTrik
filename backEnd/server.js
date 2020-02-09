@@ -1,3 +1,19 @@
+let WebSocketServer = require('websocket').server;
+const swaggerUi = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
+const options = {
+    swaggerDefinition:{
+        info:{
+            title:'API Doc',
+            description:'Api Information',
+            servers:['http://localhost:80']
+        }
+    },
+    apis:['server.js'],
+};
+const swaggerSpec = swaggerJSDoc(options);
+// const swaggerDocument = require('./swagger.json');
+
 function Server(){
     const express = require('express');
     const bodyParser = require('body-parser');
@@ -11,6 +27,7 @@ function Server(){
     
 
     const app = express();
+    app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerSpec));
     app.use(cors());
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended:true}));
@@ -19,7 +36,18 @@ function Server(){
 
     //GET
 
+    /**
+     * @swagger
+     * /products/all:
+     *  get:
+     *      description: Use to request all products
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/products/all',(req,res)=>{
+        res.statusCode = 200;
         console.log(req.query);
         let keys = Object.keys(req.query);
         let sqlDemand = 'SELECT * FROM products';
@@ -51,6 +79,16 @@ function Server(){
         res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
 
+    /**
+     * @swagger
+     * /deposits/all:
+     *  get:
+     *      description: Use to request deposits that user have acces to
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/deposits/all',(req,res)=>{
         // res.send(requestInfo.selectFrom('deposits',req.body));
         let tok = req.headers.authorization.split(' ')[1];
@@ -81,6 +119,17 @@ function Server(){
     });
 
     //aici, nu punem operator, nu exista decat campuri care pot avea relatia de identitate
+    
+    /**
+     * @swagger
+     * /companies/all:
+     *  get:
+     *      description: Use to request all companies, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+    
     app.get('/companies/all',(req,res)=>{
         let keys = Object.keys(req.query);
         let obj = {};
@@ -89,6 +138,17 @@ function Server(){
         }
         res.send(requestInfo.selectFrom('companies',obj));
     });
+
+
+    /**
+     * @swagger
+     * /products/stocks:
+     *  get:
+     *      description: Use to request see stocks on deposits
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/products/stocks',(req,res)=>{
         if(req.headers.authorization === undefined){
@@ -107,6 +167,16 @@ function Server(){
         }
     });
 
+    /**
+     * @swagger
+     * /users/all:
+     *  get:
+     *      description: Use to request all users
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/users/all',(req,res)=>{
         let obj = {};
         let keys = Object.keys(req.query);
@@ -115,6 +185,16 @@ function Server(){
         }
         res.send(requestInfo.selectFrom('users',obj));
     });
+
+    /**
+     * @swagger
+     * /me/statut:
+     *  get:
+     *      description: Use to request user's statut
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/me/statut',(req,res)=>{
         if(req.headers.authorization === undefined){
@@ -127,6 +207,16 @@ function Server(){
             res.send({status:'Invalid token!'});
         }
     });
+
+    /**
+     * @swagger
+     * /me/deposits:
+     *  get:
+     *      description: Used to request locations for deposit for specific user
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/me/deposits',(req,res)=>{
         if(req.headers.authorization === undefined){
@@ -142,6 +232,16 @@ function Server(){
     app.get('/payment/all',(req,res)=>{
         
     });
+
+    /**
+     * @swagger
+     * /orders/all:
+     *  get:
+     *      description: Use to request all orders
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/orders/all',(req,res)=>{
         let obj = {};
@@ -164,6 +264,16 @@ function Server(){
         // res.send(requestInfo.selectFrom('orders',req.body));
         res.send(requestInfo.executeQuerySelect(sqlDemand));
     });
+
+    /**
+     * @swagger
+     * /me:
+     *  get:
+     *      description: Use to request data about user
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/me',(req,res)=>{
         if(req.headers.authorization === undefined){
