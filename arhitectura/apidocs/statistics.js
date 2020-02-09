@@ -13,7 +13,7 @@
  *       "id": companyID
  *     }
  *
- * @apiSuccess {List} Statistics  List of company statistics
+ * @apiSuccess {Company} Statistics  Company of company statistics
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK

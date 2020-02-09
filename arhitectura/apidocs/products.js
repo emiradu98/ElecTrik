@@ -71,7 +71,7 @@
  */
 
 
- 
+
 
   /**
  * @api {put} products/${productID} Update Product
@@ -120,7 +120,7 @@
  *       "location": string,
  *     }
  *
- * @apiSuccess {object} Message  List of Products around my location
+ * @apiSuccess {object} Message  Company of Products around my location
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -152,7 +152,7 @@
  *       "id": string,
  *     }
  *
- * @apiSuccess {object} Message  List of My Products
+ * @apiSuccess {object} Message  Company of My Products
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK

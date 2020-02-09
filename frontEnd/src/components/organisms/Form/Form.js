@@ -35,7 +35,7 @@ export default class Form {
     if (this.id) this.PersonRepository.edit(this.data, this.id);
     else this.PersonRepository.save(this.data);
 
-    this.Router.go('list');
+    this.Router.go('company');
     e.preventDefault();
   }
 }

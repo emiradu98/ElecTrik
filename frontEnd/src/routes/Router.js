@@ -13,7 +13,6 @@ export default class Router {
         if (hash) location.hash = `#${hash}`;
         if (params) location.hash += `?id=${params.id}`;
         const page = ROUTES[getHash(hash)];
-        console.log(document.cookie)
 
         if (!page) {
             location.hash = '';

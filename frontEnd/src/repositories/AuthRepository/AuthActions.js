@@ -17,8 +17,8 @@ export const register = async (data) => {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify(data)
     })
-    if (response.status === 200) {
-        login({email: data.email, password: data.password})
+    if (response.status === 201) {
+        await login({email: data.email, password: data.password})
     }
 }
 
@@ -33,10 +33,9 @@ export const login = async (data) => {
         const authRepository = AuthRepository
         const loginState = authRepository.getState()
         loginState.isLoggedIn = true
-        authRepository.updateState(loginState)
         const json = await response.json()
         document.cookie = `token=${json.token}`;
-        Router.go('list')
+        Router.go('company')
     }
 }
 
@@ -51,15 +50,17 @@ export const autoLogin = async () => {
             const authRepository = AuthRepository;
             const loginState = authRepository.getState();
             loginState.isLoggedIn = true;
-            authRepository.updateState(loginState);
             const json = await response.json();
             loginState.user = json.data[0];
-            Router.go('list')
+            Router.go('company')
         }
     }
 }
 
 export const logout = async () => {
     document.cookie = 'token='
-    console.log(document.cookie)
+    const authRepository = AuthRepository
+    const loginState = authRepository.getState()
+    loginState.isLoggedIn = false
+    Router.go('login')
 }

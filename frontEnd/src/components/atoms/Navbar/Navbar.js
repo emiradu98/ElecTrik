@@ -12,19 +12,23 @@ export default class Navbar {
         const authRepo = AuthRepository;
         const state = authRepo.getState();
 
+        const home = state.isLoggedIn ? 'company' : 'login'
+
         if (state.isLoggedIn) {
-            excludedRoutes.push('list')
+            excludedRoutes.push('company')
+            excludedRoutes.push('orders')
+            excludedRoutes.push('statistics')
+            excludedRoutes.push('products')
         } else {
             excludedRoutes.push('register');
             excludedRoutes.push('login');
         }
-
         const linkElement = document.createElement('a');
-        linkElement.addEventListener('click', () => onClick(''));
+        linkElement.addEventListener('click', () => onClick(home));
         linkElement.textContent = 'ElecTrik';
         linkElement.classList.add('nav__link');
 
-        if (location.hash === '') {
+        if (location.hash === home) {
             linkElement.classList.add('--active')
         }
         if (location.hash.startsWith('#')) linkElement.classList.add('--active');
@@ -32,6 +36,7 @@ export default class Navbar {
         nav.appendChild(linkElement);
 
         const div = document.createElement('div');
+        div.className = 'right-nav'
 
         Object.keys(links).forEach(link => {
             if (!link) return;
@@ -50,14 +55,11 @@ export default class Navbar {
         lgbtn.addEventListener('click', () => logout(''));
         lgbtn.textContent = 'Logout';
         lgbtn.classList.add('nav__link');
-
-        if (location.hash === '') {
-            lgbtn.classList.add('--active')
-        }
         if (location.hash.startsWith('#')) lgbtn.classList.add('--active');
 
-        div.appendChild(lgbtn);
-
+        if (state.isLoggedIn) {
+            div.appendChild(lgbtn);
+        }
         nav.appendChild(div);
 
 

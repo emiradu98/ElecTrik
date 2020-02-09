@@ -394,7 +394,7 @@ require([
     }
 
     /**
-     * Check if Parameter (sub) List has a type Field.
+     * Check if Parameter (sub) Company has a type Field.
      * Example: @apiSuccess          varname1 No type.
      *          @apiSuccess {String} varname2 With type.
      *

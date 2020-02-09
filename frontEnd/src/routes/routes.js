@@ -1,6 +1,7 @@
-import listPage from './pages/listPage';
 import loginPage from './pages/loginPage';
 import registerPage from './pages/registerPage';
+import companyPage from "./pages/companyPage";
+import companyCreatePage from "./pages/companyCreatePage";
 
 const ROUTES = {
     '': {
@@ -15,10 +16,26 @@ const ROUTES = {
         name: 'Register',
         render: registerPage
     },
-    'list': {
-        name: 'List',
-        render: listPage
-    }
+    'company/create': {
+        name: 'Company Create',
+        render: companyCreatePage
+    },
+    'company': {
+        name: 'Company',
+        render: companyPage
+    },
+    'orders': {
+        name: 'Orders',
+        render: companyPage
+    },
+    'statistics': {
+        name: 'Statistics',
+        render: companyPage
+    },
+    'products': {
+        name: 'Products',
+        render: companyPage
+    },
 };
 
 export default ROUTES;

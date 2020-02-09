@@ -1,0 +1,5 @@
+{
+  "name": "CompanyRepository",
+  "private": true,
+  "main": "./CompanyRepository.js"
+}
