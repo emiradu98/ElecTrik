@@ -335,4 +335,5 @@ function userOperations(){
     };
 }
 module.exports = userOperations;
-
+// let a = new userOperations();
+// console.log(a.executeQuerySelect('SELECT * FROM news'));

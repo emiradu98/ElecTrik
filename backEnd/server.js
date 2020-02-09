@@ -481,9 +481,62 @@ function Server(){
         res.send(requestInfo.insertInto('deposits',[req.body]));
     });
 
+    app.post('/charge',(req,res)=>{
+        const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+            const token = req.body.payment_Id;
+            stripe.charges.create({
+                amount:parseInt(req.body.price),
+                currency:req.body.currency,
+                description:'Payment',
+                source:token
+            }).then((obj)=>{
+                console.log(obj);
+            });
+    });
+
     app.post('/payment/register',(req,res)=>{
-        res.statusCode = 201;
-        res.send(requestInfo.insertInto('payment',[req.body]));
+        if(req.headers.authorization === undefined){
+            res.statusCode = 401;
+            res.send({status:'Need token to log in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            res.statusCode = 201;
+            const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc');
+            const token = req.body.payment_Id;
+            stripe.charges.create({
+                amount:parseInt(req.body.price),
+                currency:req.body.currency,
+                description:'Payment',
+                source:token
+            }).then((obj)=>{
+                console.log(obj);
+            });
+            //res.send(requestInfo.insertInto('payment',[req.body]));
+            res.send({});
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+    app.post('/news/add',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.statusCode = 201;
+            res.send({status:'Not logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            let companyData = requestInfo.selectFrom('companies',{company_id:userData.data[0].company_id});
+            req.body.sender = companyData.data[0].company_name;
+            let payments = requestInfo.selectFrom('payment',{provider_Id:companyData.data[0].company_id});
+            for(let i=0;i<payments.data.length;i++){
+                req.body.receiver = payments.data[i].client_Id;
+                requestInfo.insertInto('payment',[req.body]);
+            }
+            res.send({status:'News send!'});
+        }else{
+            res.statusCode = 401;
+            res.send({status:'Invalid token!'});
+        }
     });
 
     app.post('/orders/register',(req,res)=>{
