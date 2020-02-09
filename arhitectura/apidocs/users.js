@@ -65,7 +65,7 @@
  *       "id": userID
  *     }
  *
- * @apiSuccess {Array} companies  List of User companies.
+ * @apiSuccess {Array} companies  Company of User companies.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK

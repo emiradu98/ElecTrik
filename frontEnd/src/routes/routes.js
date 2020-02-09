@@ -1,40 +1,41 @@
-import formPage from './pages/formPage';
-import listPage from './pages/listPage';
-import {getParam} from './parsers';
 import loginPage from './pages/loginPage';
-import authRepository from '../repositories/AuthRepository/AuthRepository';
 import registerPage from './pages/registerPage';
+import companyPage from "./pages/companyPage";
+import companyCreatePage from "./pages/companyCreatePage";
 
-const authState = authRepository.getState();
-const ROUTES = authState.isLoggedIn ? {
-  'form': {
-    name: 'Form',
-    render: (hash, params) => {
-      const id = params ? params.id : getParam(hash, 'id');
-      return formPage(id);
-    }
-  },
-  'list': {
-    name: 'List',
-    render: listPage
-  },
-  '': {
-    name: 'List',
-    render: listPage
-  }
-} : {
-  'login': {
-    name: 'Login',
-    render: loginPage
-  },
-  'register': {
-    name: 'Register',
-    render: registerPage
-  },
-  '': {
-    name: 'List',
-    render: listPage
-  }
+const ROUTES = {
+    '': {
+        name: 'Home',
+        render: loginPage
+    },
+    'login': {
+        name: 'Login',
+        render: loginPage
+    },
+    'register': {
+        name: 'Register',
+        render: registerPage
+    },
+    'company/create': {
+        name: 'Company Create',
+        render: companyCreatePage
+    },
+    'company': {
+        name: 'Company',
+        render: companyPage
+    },
+    'orders': {
+        name: 'Orders',
+        render: companyPage
+    },
+    'statistics': {
+        name: 'Statistics',
+        render: companyPage
+    },
+    'products': {
+        name: 'Products',
+        render: companyPage
+    },
 };
 
 export default ROUTES;

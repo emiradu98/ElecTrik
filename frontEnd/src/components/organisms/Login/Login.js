@@ -1,13 +1,13 @@
-import {API_URL, regexEmail} from '../../../../static/constants/constants';
 import Form from "../../molecules/Form/Form";
+import {sha256} from "js-sha256";
+import {login} from "../../../repositories/AuthRepository/AuthActions";
 
 require('./Login.scss');
 
 export default class Login {
   constructor () {
-    let data = {}
 
-    this.registerForm = new Form({
+    this.loginForm = new Form({
           inputArray: [
             {
               name: 'email',
@@ -33,15 +33,7 @@ export default class Login {
             },
           ],
           formTitle: 'Login',
-          onSubmit: async () => {
-            data = this.registerForm.getValues();
-            const response = await fetch(`${API_URL}/auth/login`, {
-              method: 'post',
-              headers: {'Content-Type': 'application/json'},
-              body: JSON.stringify(data)
-            })
-            console.log(response)
-          }
+          onSubmit: ()=>login({email: this.loginForm.getValues().email, password: sha256(this.loginForm.getValues().password)})
           ,
           btn: {
             type: 'button',
@@ -52,7 +44,7 @@ export default class Login {
     )
     this.component = document.createElement('div');
     this.component.className = 'centered-form'
-    this.component.appendChild(this.registerForm.innerHTML());
+    this.component.appendChild(this.loginForm.innerHTML());
     return this;
   }
 

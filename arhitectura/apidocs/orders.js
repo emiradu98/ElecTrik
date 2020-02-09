@@ -14,7 +14,7 @@
  *        "id": companyID
  * }
  *
- * @apiSuccess {json} message json  Orders List
+ * @apiSuccess {json} message json  Orders Company
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -28,7 +28,7 @@
  *                  }
  *              ]
  *
- * @apiError Unauthorized 
+ * @apiError Unauthorized
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 401 Unauthorized
@@ -67,7 +67,7 @@
  *                      orderID: string
  *                  }
  *
- * @apiError Unauthorized 
+ * @apiError Unauthorized
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 401 Unauthorized
@@ -92,7 +92,7 @@
  *        "id": userID
  * }
  *
- * @apiSuccess {json} message json  Orders List
+ * @apiSuccess {json} message json  Orders Company
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -106,7 +106,7 @@
  *                  }
  *              ]
  *
- * @apiError Unauthorized 
+ * @apiError Unauthorized
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 401 Unauthorized

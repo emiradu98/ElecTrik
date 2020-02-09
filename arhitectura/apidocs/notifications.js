@@ -14,7 +14,7 @@
  *        "id": userID
  * }
  *
- * @apiSuccess {json} message json  Notifications List
+ * @apiSuccess {json} message json  Notifications Company
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
@@ -28,7 +28,7 @@
  *                  }
  *              ]
  *
- * @apiError Unauthorized 
+ * @apiError Unauthorized
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 401 Unauthorized
@@ -48,7 +48,7 @@
         {
               "Authorization": Bearer
         }
- * 
+ *
  *
  * @apiParamExample {json} Body:
  *          {
@@ -63,10 +63,10 @@
  *         {
  *              "message": "success!"
  *         }
- * 
- * 
  *
- * @apiError Unauthorized 
+ *
+ *
+ * @apiError Unauthorized
  *
  * @apiErrorExample Error-Response:
  *     HTTP/1.1 401 Unauthorized

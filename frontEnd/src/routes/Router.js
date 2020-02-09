@@ -1,21 +1,26 @@
 import ROUTES from './routes';
-import { getHash } from './parsers';
+import {getHash} from './parsers';
 import Navbar from '../components/atoms/Navbar';
+import AuthRepository from "../repositories/AuthRepository";
+import {autoLogin} from "../repositories/AuthRepository/AuthActions";
 
 export default class Router {
-  static go (hash = '', params) {
-    if (hash.startsWith('#')) hash = hash.replace('#', '');
-    if (hash) location.hash = `#${hash}`;
-    if (params) location.hash += `?id=${params.id}`;
+    static go(hash = '', params) {
+        if (!AuthRepository.getState().isLoggedIn) {
+            autoLogin()
+        }
+        if (hash.startsWith('#')) hash = hash.replace('#', '');
+        if (hash) location.hash = `#${hash}`;
+        if (params) location.hash += `?id=${params.id}`;
+        const page = ROUTES[getHash(hash)];
 
-    const page = ROUTES[getHash(hash)];
-    if (!page) {
-      location.hash = '';
-      return page.render();
+        if (!page) {
+            location.hash = '';
+            return page.render();
+        }
+
+        document.querySelector('.main').innerHTML = '';
+        document.querySelector('.main').appendChild(new Navbar(ROUTES, Router.go).component);
+        document.querySelector('.main').appendChild(page.render(hash, params));
     }
-
-    document.querySelector('.main').innerHTML = '';
-    document.querySelector('.main').appendChild(new Navbar(ROUTES, Router.go).component);
-    document.querySelector('.main').appendChild(page.render(hash, params));
-  }
 }
