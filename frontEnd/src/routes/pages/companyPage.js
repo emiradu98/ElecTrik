@@ -1,8 +1,6 @@
-import CompanyRepository from '../../repositories/CompanyRepository/CompanyRepository';
-import Company from '../../components/organisms/Company/Company';
-import {persons} from '../../mock/companies.json';
+import Company from '../../components/organisms/Company/Company'
 
-export default () => {
-    const company = new Company(persons, CompanyRepository);
-    return company.component;
+export default (link, props) => {
+	const company = new Company(props)
+	return company.component
 };

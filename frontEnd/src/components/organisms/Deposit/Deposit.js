@@ -4,9 +4,9 @@ import { getCompanies } from '../../../repositories/CompanyRepository/CompanyAct
 import CompanyRepository from '../../../repositories/CompanyRepository'
 import { CompanyLink } from '../../molecules/CompanyLink/CompanyLink'
 import _ from 'lodash'
-require('./Company.scss')
+require('./Deposit.scss')
 
-export default class Company {
+export default class Deposit {
 	constructor () {
 		this.component = document.createElement('div')
 		this.component.classList.add('list__page')

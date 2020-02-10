@@ -1,5 +1,5 @@
 {
-	"name": "Input",
-	"private": true,
-	"main": "./Input.js"
+  "name": "Input",
+  "private": true,
+  "main": "./Input.js"
 }

@@ -1,5 +1,5 @@
-import Router from './routes/Router';
+import Router from './routes/Router'
 
-require('./scss/base.scss');
+require('./scss/base.scss')
 
-Router.go(location.hash);
+Router.go(location.hash)

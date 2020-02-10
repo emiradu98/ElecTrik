@@ -1,13 +1,13 @@
-import Router from '../../../routes/Router'
-import { Button } from '../../molecules/Button/Button'
-import { getCompanies } from '../../../repositories/CompanyRepository/CompanyActions'
-import CompanyRepository from '../../../repositories/CompanyRepository'
-import { CompanyLink } from '../../molecules/CompanyLink/CompanyLink'
-import _ from 'lodash'
-require('./Company.scss')
+import CompanyRepository from '../../../../repositories/CompanyRepository'
+import { Button } from '../../../molecules/Button/Button'
+import Router from '../../../../routes/Router'
+import { getCompanies } from '../../../../repositories/CompanyRepository/CompanyActions'
+import { CompanyLink } from '../../../molecules/CompanyLink/CompanyLink'
 
-export default class Company {
-	constructor () {
+require('./CompanySingle.scss')
+
+export default class CompanySingle {
+	constructor ({ id }) {
 		this.component = document.createElement('div')
 		this.component.classList.add('list__page')
 		this.flexDiv = document.createElement('div')
@@ -18,7 +18,7 @@ export default class Company {
 		const button = new Button(
 			{
 				innerText: 'Create company', onClick: () => {
-					Router.go('company/create')
+					Router.go('deposit/create', { id })
 				}, type: 'button'
 			}
 		)
@@ -48,7 +48,7 @@ export default class Company {
 	}
 
 	async componentDidMount (comp) {
-			await getCompanies()
+		await getCompanies()
 		this.list = []
 		if (this.companies) {
 			this.companies.forEach(company => {
@@ -65,6 +65,6 @@ export default class Company {
 				comp.appendChild(item)
 			}
 		)
-
 	}
+
 }

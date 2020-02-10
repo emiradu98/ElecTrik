@@ -1,0 +1,5 @@
+{
+  "name": "Deposit",
+  "private": true,
+  "main": "Deposit.js"
+}

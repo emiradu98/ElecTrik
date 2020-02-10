@@ -26,8 +26,8 @@ $input-width: $field-width;
       color: darken($color-success, 10%);
     }
 
-    .input__bar  {
-      &:before, &:after   {
+    .input__bar {
+      &:before, &:after {
         background: $color-success;
       }
     }
@@ -47,8 +47,8 @@ $input-width: $field-width;
       color: darken($color-error, 10%);
     }
 
-    .input__bar  {
-      &:before, &:after   {
+    .input__bar {
+      &:before, &:after {
         background: $color-error;
       }
     }
@@ -95,11 +95,12 @@ $input-width: $field-width;
   color: darken($color-default, 10%);
 }
 
-.input__bar  {
+.input__bar {
   position: relative;
   display: block;
   width: calc(100% + 2rem);
-  &:before, &:after   {
+
+  &:before, &:after {
     content: '';
     height: .2rem;
     width: 0;

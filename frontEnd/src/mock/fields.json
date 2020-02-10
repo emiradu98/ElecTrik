@@ -1,46 +1,46 @@
 {
-   "fields":[
-      {
-         "name":"txtFullname",
-         "id":"txtFullname",
-         "type":"text",
-         "class":"input"
-      },
-      {
-         "name":"txtCpf",
-         "id":"txtCpf",
-         "type":"text",
-         "Mask":"000.000.000-00",
-         "class":"input"
-      },
-      {
-         "name":"txtTelephone",
-         "id":"txtTelephone",
-         "type":"text",
-         "Mask":"(00) 00000-0000",
-         "class":"input"
-      },
-      {
-         "name":"txtAddress",
-         "id":"txtAddress",
-         "type":"text",
-         "class":"input"
-      },
-      {
-         "name":"txtComplement",
-         "id":"txtComplement",
-         "type":"text",
-         "class":"input"
-      },
-      {
-         "name":"uplImage",
-         "id":"uplImage",
-         "class":"upload-button"
-      },
-      {
-         "name":"btnSave",
-         "id":"btnSave",
-         "class":"input"
-      }
-   ]
+  "fields": [
+    {
+      "name": "txtFullname",
+      "id": "txtFullname",
+      "type": "text",
+      "class": "input"
+    },
+    {
+      "name": "txtCpf",
+      "id": "txtCpf",
+      "type": "text",
+      "Mask": "000.000.000-00",
+      "class": "input"
+    },
+    {
+      "name": "txtTelephone",
+      "id": "txtTelephone",
+      "type": "text",
+      "Mask": "(00) 00000-0000",
+      "class": "input"
+    },
+    {
+      "name": "txtAddress",
+      "id": "txtAddress",
+      "type": "text",
+      "class": "input"
+    },
+    {
+      "name": "txtComplement",
+      "id": "txtComplement",
+      "type": "text",
+      "class": "input"
+    },
+    {
+      "name": "uplImage",
+      "id": "uplImage",
+      "class": "upload-button"
+    },
+    {
+      "name": "btnSave",
+      "id": "btnSave",
+      "class": "input"
+    }
+  ]
 }

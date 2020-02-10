@@ -1,5 +1,5 @@
 {
-	"name": "Form",
-	"private": true,
-	"main": "./Form.js"
+  "name": "Form",
+  "private": true,
+  "main": "./Form.js"
 }

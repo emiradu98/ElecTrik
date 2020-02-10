@@ -1,7 +1,7 @@
-import {auth} from '../../mock/auth.json';
+import { auth } from '../../mock/auth.json'
 
 export default class AuthRepository {
-    static getState() {
-        return auth;
-    }
+	static getState () {
+		return auth
+	}
 }
