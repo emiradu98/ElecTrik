@@ -134,6 +134,7 @@ let arr_obj = [
     {first_name:'George',last_name:'Rohozneanu',email:'rohoGeo@gmail.com',phone:'0753010142',password:'lubitzu',region:'Europe',location:'London',country:'USA',auth_token:'',token:'',company_id:1,title:'Local'}
 ];
 module.exports = dbOperations;
+// new dbOperations('electrik.db').updateData('companies',{invite:'emitzu'},{company_id:19});
 // console.log(new dbOperations('electrik.db').makeSelection('SELECT * FROM deposits'));
 // new dbOperations('electrik.db').updateData('companies',{owner_id:3},{company_id:1});
 // console.log(new dbOperations('electrik.db').makeSelection("SELECT * FROM payment"));

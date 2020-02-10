@@ -187,7 +187,7 @@ function userOperations(){
     function isOwner(tokenObject){
         let userData = dataBase.selectData('users',tokenObject);
         let companyData = dataBase.selectData('companies',{owner_id:userData[0].user_id});
-        if(companyData !== undefined){
+        if(companyData.length > 0){
             return {status:'Owner'};
         }else{
             return {status:'Employee'};
