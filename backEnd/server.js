@@ -103,10 +103,13 @@ function Server(){
             return;
         }
         // console.log(usrData.data);
+        console.log(req.query);
         if(requestInfo.isOwner({token:tok}).status === 'Owner'){
-            let companyData = requestInfo.selectFrom('companies',{owner_id:usrData.data[0].user_id});
+            let companyData = requestInfo.selectFrom('companies',{company_id:parseInt(req.query['search'])});
             // console.log(companyData);
-            res.send(requestInfo.selectFrom('deposits',{company_id:companyData.data[0].company_id}));
+            if(companyData.data[0].owner_id === requestInfo.selectFrom('users',{token:tok}).data[0].user_id){
+                res.send(requestInfo.selectFrom('deposits',{company_id:parseInt(req.query['search'])}));
+            }
         }else{
             //
             let sqlDemand = "SELECT * FROM DEPOSITS WHERE admin_ids LIKE '%" + usrData.data[0].user_id + "%'";
@@ -218,7 +221,7 @@ function Server(){
     });
 
     app.get('/check',(req,res)=>{
-        sync.markOne();
+        sync.quickAdd('1','1','1');
         res.send(sync.getArray());
     });
 
@@ -666,7 +669,8 @@ function call(){
     wss.on('connection',(ws)=>{
         ws.on('message',(tok)=>{
             // sync.markOne();
-            ws.send(JSON.stringify(sync.getArray()));
+            sync.add(ws,tok);
+            // ws.send(JSON.stringify(sync.getArray()));
             // let userData = requestInfo.selectFrom('users',{token:tok});
             // let newsFeed = requestInfo.selectFrom('payment',{receiver:userData.data[0].company_id});
             // for(let i=0;i<newsFeed.data.length;i++){
@@ -677,8 +681,13 @@ function call(){
             // }
         });
         wss.clients.forEach((client)=>{
-            for(let i=0;i<sync.getArray();i++){
-
+            let arr = sync.getArray();
+            for(let i=0;i<arr.length;i++){
+                if(arr[i][2] !== ''){
+                    console.log(arr);
+                    arr[i][2] = '';
+                    client.send('ok!');
+                }
             }
         });
     });
