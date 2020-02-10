@@ -97,14 +97,14 @@ function Server(){
             res.send(usrData);
             return;
         }
-        if(usrData.data[0].title === 'General'){
+        if(requestInfo.isOwner({token:tok}).status === 'Owner'){
             res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id}));
         }else{
             //
-            let sqlDemand = 'SELECT * FROM DEPOSITS WHERE company_id=' + usrData.data[0].company_id + ' ';
+            let sqlDemand = "SELECT * FROM DEPOSITS WHERE admin_ids LIKE '%" + usrData.data[0].user_id + "%'";
             let keys = Object.keys(req.query);
             if(parseInt(keys.length/3) > 0){
-                sqlDemand += 'AND ';
+                sqlDemand += ' AND ';
             }
             for(let i=0;i<parseInt(keys.length/3);i++){
                 sqlDemand += req.query[('f'+(i+1))] + ' ' + req.query[('o'+(i+1))] + " '" + req.query[('v'+(i+1))] + "'";
