@@ -57,6 +57,13 @@ export const autoLogin = async () => {
 }
 
 export const logout = async () => {
+	const cookie = document.cookie.split('token=')[1];
+	if (cookie) {
+		const response = await fetch(`${API_URL}/auth/logout`, {
+			method: 'post',
+			headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`}
+		})
+	}
 	document.cookie = 'token='
 	const authRepository = AuthRepository
 	const loginState = authRepository.getState()

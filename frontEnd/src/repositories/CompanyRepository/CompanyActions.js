@@ -32,14 +32,10 @@ export const createCompany = async (data) => {
 	if (response.status === 201) {
 		getCompanies()
 	}
-	// const state = companyRepository.getState()
-	// state.companies = json.data
 }
 
 export const deleteCompany = async (id) => {
-	const companyRepository = CompanyRepository
 	const cookie = document.cookie.split('token=')[1]
-
 	if(cookie) {
 		const response = await fetch(`${API_URL}/companies/delete`, {
 			method: 'delete',
@@ -47,6 +43,4 @@ export const deleteCompany = async (id) => {
 			body: JSON.stringify({company_id: id})
 		})
 	}
-	// const state = companyRepository.getState()
-	// state.companies = json.data
 }
