@@ -120,7 +120,7 @@ function SqliteDbInit(dataBaseName){
 }
 
 let a = new SqliteDbInit('electrik.db');
-// a.makeNew('ALTER TABLE payment ADD currency TEXT');
+// a.makeNew('ALTER TABLE payment ADD charge BLOB');
 // a.makeNew('ALTER TABLE companies ADD location TEXT');
 // a.makeNew('ALTER TABLE companies ADD invite TEXT');
 // a.constructDatabase();

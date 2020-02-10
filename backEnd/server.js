@@ -509,9 +509,9 @@ function Server(){
                 description:'Payment',
                 source:token
             }).then((obj)=>{
+                //res.send(requestInfo.insertInto('payment',[req.body]));
                 console.log(obj);
             });
-            //res.send(requestInfo.insertInto('payment',[req.body]));
             res.send({});
         }else{
             res.send({status:'Invalid token!'});
@@ -593,23 +593,29 @@ function Server(){
     app.delete('/users/delete',(req,res)=>{
         if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
             res.send(requestInfo.deleteData('users',req.body)); 
+        }else{
+            res.send({status:'Invalid token!'});
         }
     });
 
     app.delete('/companies/delete',(req,res)=>{
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.deleteData('companies',req.body));
+        }else{
+            res.send({status:'Invalid token!'});
         }
     });
 
     app.delete('/deposits/delete',(req,res)=>{
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.deleteData('deposits',req.body));
+        }else{
+            res.send({status:'Invalid token!'});
         }
     });
 
     app.delete('/products/delete',(req,res)=>{
-        if(requestInfo.isLogged(req.headers.authorization.split(' ')[1]) === true){
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             res.send(requestInfo.deleteData('products',req.body));
         }
     });
