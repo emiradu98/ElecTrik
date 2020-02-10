@@ -14,7 +14,7 @@ export class CompanyLink {
 			deleteCompany(id)
 			e.stopPropagation()
 		})
-		this.delete.innerText = 'X'
+		this.delete.innerText = 'ⓧ'
 
 		this.div.appendChild(this.delete)
 

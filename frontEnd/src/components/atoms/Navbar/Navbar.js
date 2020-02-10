@@ -17,6 +17,7 @@ export default class Navbar {
 		const home = state.isLoggedIn ? 'company' : 'login'
 
 		if (state.isLoggedIn) {
+			excludedRoutes.push('shop')
 			excludedRoutes.push('company')
 		} else {
 			excludedRoutes.push('register')
@@ -33,6 +34,8 @@ export default class Navbar {
 		if (location.hash.startsWith('#')) linkElement.classList.add('--active')
 
 		nav.appendChild(linkElement)
+
+
 
 		const div = document.createElement('div')
 		div.className = 'right-nav'
@@ -61,8 +64,15 @@ export default class Navbar {
 		this.userBtn.classList.add('nav__link')
 		if (location.hash.startsWith('#')) this.userBtn.classList.add('--active')
 
+		const shopElement = document.createElement('a')
+		shopElement.addEventListener('click', () => onClick(home))
+		shopElement.textContent = 'Notifications'
+		shopElement.classList.add('nav__link')
+
+
 		if (state.isLoggedIn) {
 			div.appendChild(this.userDiv)
+			div.appendChild(shopElement)
 		}
 		nav.appendChild(div)
 

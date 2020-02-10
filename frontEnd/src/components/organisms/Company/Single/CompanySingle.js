@@ -1,70 +1,94 @@
 import CompanyRepository from '../../../../repositories/CompanyRepository'
-import { Button } from '../../../molecules/Button/Button'
+import {Button} from '../../../molecules/Button/Button'
 import Router from '../../../../routes/Router'
-import { getCompanies } from '../../../../repositories/CompanyRepository/CompanyActions'
-import { CompanyLink } from '../../../molecules/CompanyLink/CompanyLink'
+import {getDeposits} from '../../../../repositories/CompanyRepository/CompanyActions'
+import {Map} from "../../../molecules/Map/Map";
+import {CompanyLink} from "../../../molecules/CompanyLink/CompanyLink";
 
 require('./CompanySingle.scss')
+require('../Company.scss')
 
 export default class CompanySingle {
-	constructor ({ id }) {
-		this.component = document.createElement('div')
-		this.component.classList.add('list__page')
-		this.flexDiv = document.createElement('div')
-		this.flexDiv.className = 'flexDiv'
-		this._init(this.flexDiv)
-		this.companyRepository = CompanyRepository
-		this.companies = this.companyRepository.getState().companies
-		const button = new Button(
-			{
-				innerText: 'Create company', onClick: () => {
-					Router.go('deposit/create', { id })
-				}, type: 'button'
-			}
-		)
+    constructor({id}) {
+        this.id = id
+        this.markers = []
 
-		this.rightButton = document.createElement('div')
-		this.rightButton.className = 'rightButton'
-		this.rightButton.appendChild(button.innerHTML())
+        this.component = document.createElement('div')
+        this.component.classList.add('list__page')
+        this.flexDiv = document.createElement('div')
+        this.flexDiv.className = 'flexDiv'
+        this._init(this.flexDiv)
+        this.companyRepository = CompanyRepository
+        this.companies = this.companyRepository.getState().companies
+        const button = new Button(
+            {
+                innerText: 'Create deposit', onClick: () => {
+                    Router.go('deposit/create', {id})
+                }, type: 'button'
+            }
+        )
+        this.list = []
+        this.deposits = this.companyRepository.getDeposits().deposits
+        this.centeredDiv = document.createElement('div')
+        this.centeredDiv.className = 'centeredDiv';
+        if (_.isEmpty(this.deposits)) {
+            this.text = document.createElement('p')
+            this.text.innerText = `You don't have any deposits yet. Please add one.`
+            this.centeredDiv.appendChild(this.text)
+        } else {
+            this.deposits.forEach((dep) => {
+                // this.markers.push({
+                //     lat: dep.location.split(' ')[0],
+                //     lng: dep.location.split(' ')[1],
+                //     company_name: dep.company_name
+                // })
+                let text = new CompanyLink({
+                    name: dep.id,
+                    link: 'products',
+                    id: dep.id
+                })
+                this.flexDiv.appendChild(text.innerHTML())
 
-		this.component.appendChild(this.rightButton)
-		this.component.appendChild(this.flexDiv)
-		return this
+            })
+            this.map = new Map({click: false, markers: this.markers})
 
-	}
+            this.centeredDiv.append(this.map.innerHTML())
+        }
 
-	async _init (comp) {
-		await this.componentDidMount(comp)
 
-	}
+        this.rightButton = document.createElement('div')
+        this.rightButton.className = 'rightButton'
+        this.rightButton.appendChild(button.innerHTML())
 
-	handleEdit (id) {
-		Router.go('form', { id })
-	}
+        this.component.appendChild(this.rightButton)
+        this.wrapper = document.createElement('div')
+        this.wrapper.className = 'wrapper';
+        this.component.appendChild(this.flexDiv)
+        this.wrapper.appendChild(this.centeredDiv)
+        this.component.appendChild(this.wrapper)
 
-	handleDelete (id, rowElement) {
-		this.PersonRepository.delete(id)
-		this.list.removeChild(rowElement)
-	}
+        return this
 
-	async componentDidMount (comp) {
-		await getCompanies()
-		this.list = []
-		if (this.companies) {
-			this.companies.forEach(company => {
-				let text = new CompanyLink({
-					name: company.company_name,
-					link: 'company/single',
-					email: company.email,
-					id: company.company_id
-				})
-				this.list.push(text.innerHTML())
-			})
-		}
-		this.list.forEach(item => {
-				comp.appendChild(item)
-			}
-		)
-	}
+    }
+
+    async _init(comp) {
+        await this.componentDidMount(comp)
+
+    }
+
+    handleEdit(id) {
+        Router.go('form', {id})
+    }
+
+    handleDelete(id, rowElement) {
+        this.PersonRepository.delete(id)
+        this.list.removeChild(rowElement)
+    }
+
+    async componentDidMount(comp) {
+        await getDeposits(this.id)
+        this.list = []
+
+    }
 
 }

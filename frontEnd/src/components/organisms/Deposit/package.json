@@ -1,5 +1,5 @@
 {
-  "name": "Deposit",
+  "name": "Company Create",
   "private": true,
-  "main": "Deposit.js"
+  "main": "Create.js"
 }

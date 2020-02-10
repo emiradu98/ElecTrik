@@ -1,81 +1,3 @@
-.list__container {
-
-}
-
-.list__items {
-  max-width: 90%;
-  display: flex;
-  flex-flow: row;
-  flex-wrap: wrap;
-  margin: 0 auto;
-}
-
-.list__item {
-  padding: 1rem;
-  margin: 1rem;
-  border: .1rem solid #B9C1CB;
-  border-radius: .5rem;
-  transition: .2s all;
-}
-
-.list__item__avatar {
-  width: 10rem;
-  height: 10rem;
-  border-radius: 50%;
-  margin: 0 auto;
-  display: block;
-}
-
-.list__item__name {
-  font-size: 1.4rem;
-  margin: 1rem;
-  text-align: center;
-  display: block;
-}
-
-.list__item__edit-button,
-.list__item__delete-button {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1201px) {
-  .list__item {
-    width: calc(100% / 3 - 4.5rem);
-  }
-}
-
-@media only screen and (max-width: 1200px) {
-  .list__item {
-    width: calc(100% / 2 - 10rem);
-  }
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (max-width: 992px) {
-  .list__item {
-    width: calc(100% / 2 - 5rem);
-  }
-}
-
-/* Small Devices, Tablets */
-@media only screen and (max-width: 768px) {
-  .list__item {
-    width: calc(100% - 5rem);
-  }
-}
-
-/* Extra Small Devices, Phones */
-@media only screen and (max-width: 480px) {
-  .list__item {
-    width: 100%;
-    min-width: 30rem;
-    max-width: 90%;
-  }
-}
-
-
 .rightButton {
   width: 100%;
   justify-content: flex-end;
@@ -89,4 +11,18 @@
   width: 100%;
   justify-content: center;
   margin-top: 10px;
+}
+
+.centeredDiv {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  flex-direction: column;
+  align-self: center;
+}
+
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
