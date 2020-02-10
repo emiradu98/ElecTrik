@@ -9,7 +9,7 @@ let firstProduct = true
 export const getCompanies = async () => {
     const companyRepository = CompanyRepository
     firstDeposit = true
-
+    firstProduct = true
     const cookie = document.cookie.split('token=')[1]
     if (cookie) {
         const response = await fetch(`${API_URL}/me/companies/`, {
@@ -55,6 +55,7 @@ export const deleteCompany = async (id) => {
 
 export const getDeposits = async (id) => {
     const cookie = document.cookie.split('token=')[1]
+    firstProduct = true
     const companyRepository = CompanyRepository
     if (cookie) {
         const response = await fetch(`${API_URL}/deposits/all?search=${id}`, {
@@ -147,6 +148,22 @@ export const createProduct = async (data, id) => {
         if (response.status === 201) {
             firstProduct = true
             Router.go('products', {id})
+        }
+    }
+}
+
+
+export const deleteProduct = async (id, depId) => {
+    const cookie = document.cookie.split('token=')[1]
+    if (cookie) {
+        const response = await fetch(`${API_URL}/products/delete`, {
+            method: 'delete',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+            body: JSON.stringify({id: id})
+        })
+        if (response.status === 200) {
+            firstProduct = true
+            getProducts(depId)
         }
     }
 }

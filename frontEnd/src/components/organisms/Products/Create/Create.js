@@ -27,7 +27,13 @@ export default class Create {
                         required: true,
                         placeholder: 'Type company email',
                         type: 'select',
-                        options: [{value: 'bicyle', label: '🚴‍♀️Bicycle'}, {value: 'battery', label: '🔋Battery'}],
+                        options: [
+                            {value: '🚴‍♀Bicycle', label: '🚴‍♀Bicycle'},
+                            {value: '🔋Battery', label: '🔋Battery'},
+                            {value: '⚡Engine', label: '⚡Engine'},
+                            {value: '💡Lightbulb', label: '💡Lightbulb'},
+                            {value: '🔌Charger', label: '🔌Charger'},
+                        ],
                         onChange: () => {
                         }
                     },
@@ -70,7 +76,7 @@ export default class Create {
     formValues() {
         this.data = this.createCompany.getValues()
         this.data.deposit_id = this.id
-        this.data.available_series = ''
+        this.data.availabe_series = ''
         this.data.taken_series = ''
         this.data.price = Number(this.data.price)
         this.data.stock = Number(this.data.stock)

@@ -2,7 +2,7 @@ import Router from '../../../routes/Router'
 import {Button} from '../../molecules/Button/Button'
 import CompanyRepository from '../../../repositories/CompanyRepository'
 import {CompanyLink} from "../../molecules/CompanyLink/CompanyLink";
-import {getProducts} from "../../../repositories/CompanyRepository/CompanyActions";
+import {deleteProduct, getProducts} from "../../../repositories/CompanyRepository/CompanyActions";
 import _ from 'lodash'
 
 export default class Products {
@@ -56,14 +56,14 @@ export default class Products {
         if (this.products) {
             this.products.forEach(product => {
                 let text = new CompanyLink({
-                    name: product.company_name,
-                    link: 'company/single',
-                    email: product.email,
-                    id: product.company_id,
-                    onClick: () => Router.go('company/single', {id: product.company_id}),
+                    name: product.name,
+                    link: 'product',
+                    email: product.producer,
+                    id: product.id,
+                    onClick: () => Router.go('product', {id: product.id}),
                     onRemove: (e) => {
                         e.preventDefault()
-                        deleteProduct(company.company_id)
+                        deleteProduct(product.id, this.id)
                         e.stopPropagation()
                     }
                 })
