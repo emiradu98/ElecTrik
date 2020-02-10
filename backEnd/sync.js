@@ -1,11 +1,18 @@
 function Sync(){
     this.arr = [];
-    this.markOne = function(){
-        arr.push(1);
+    this.add = function(client,token){
+        this.arr.push([client,token,'']);
     }
+
+    this.quickAdd = function(d1,d2,d3){
+        this.arr.push([d1,d2,d3]);
+    }
+
     this.getArray = function(){
-        return arr;
+        return this.arr;
     }
 }
-
-module.exports = Sync;
+let sync = new Sync();
+module.exports = ()=>{
+    return sync;
+}
