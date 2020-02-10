@@ -12,7 +12,7 @@ export default class Create {
 				inputArray: [
 					{
 						name: 'company_name',
-						labelName: 'Deposit Name',
+						labelName: 'Company Name',
 						id: 'company_name',
 						required: true,
 						placeholder: 'Type company name',
@@ -53,7 +53,7 @@ export default class Create {
 					},
 					{
 						name: 'email',
-						labelName: 'Deposit Email',
+						labelName: 'Company Email',
 						id: 'email',
 						required: true,
 						placeholder: 'Type company email',
