@@ -54,7 +54,7 @@ export const getDeposits = async (id) => {
     const cookie = document.cookie.split('token=')[1]
     const companyRepository = CompanyRepository
     if (cookie) {
-        const response = await fetch(`${API_URL}/deposits/all`, {
+        const response = await fetch(`${API_URL}/deposits/all?search=${id}`, {
             method: 'get',
             headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
         })
@@ -62,6 +62,7 @@ export const getDeposits = async (id) => {
             const json = await response.json()
             const state = companyRepository.getDeposits()
             state.deposits = await json.data
+            console.log(state)
             if (firstDeposit) {
                 firstDeposit = false
                 Router.go('company/single', {id})
