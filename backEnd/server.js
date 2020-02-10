@@ -97,8 +97,11 @@ function Server(){
             res.send(usrData);
             return;
         }
+        // console.log(usrData.data);
         if(requestInfo.isOwner({token:tok}).status === 'Owner'){
-            res.send(requestInfo.selectFrom('deposits',{company_id:usrData.data[0].company_id}));
+            let companyData = requestInfo.selectFrom('companies',{owner_id:usrData.data[0].user_id});
+            // console.log(companyData);
+            res.send(requestInfo.selectFrom('deposits',{company_id:companyData.data[0].company_id}));
         }else{
             //
             let sqlDemand = "SELECT * FROM DEPOSITS WHERE admin_ids LIKE '%" + usrData.data[0].user_id + "%'";
