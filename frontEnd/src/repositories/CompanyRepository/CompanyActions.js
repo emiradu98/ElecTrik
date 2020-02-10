@@ -61,7 +61,7 @@ export const getDeposits = async (id) => {
         if (response.status === 200) {
             const json = await response.json()
             const state = companyRepository.getDeposits()
-            state.deposits = json.data
+            state.deposits = await json.data
             if (firstDeposit) {
                 firstDeposit = false
                 Router.go('company/single', {id})
@@ -72,6 +72,8 @@ export const getDeposits = async (id) => {
 
 export const createDeposit = async (data, id) => {
     const cookie = document.cookie.split('token=')[1]
+    const companyRepository = CompanyRepository
+
     if (cookie) {
         const response = await fetch(`${API_URL}/deposits/register`, {
             method: 'post',
@@ -79,7 +81,23 @@ export const createDeposit = async (data, id) => {
             body: JSON.stringify(data)
         })
         if (response.status === 201) {
+            firstDeposit = true
             Router.go('company/single', {id})
+        }
+    }
+}
+
+export const deleteDeposit = async (id) => {
+    const cookie = document.cookie.split('token=')[1]
+    if (cookie) {
+        const response = await fetch(`${API_URL}/deposits/delete`, {
+            method: 'delete',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+            body: JSON.stringify({id: id})
+        })
+        if (response.status === 200) {
+            firstDeposit = true
+            getDeposits()
         }
     }
 }

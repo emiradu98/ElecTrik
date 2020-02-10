@@ -1,7 +1,7 @@
 import CompanyRepository from '../../../../repositories/CompanyRepository'
 import {Button} from '../../../molecules/Button/Button'
 import Router from '../../../../routes/Router'
-import {getDeposits} from '../../../../repositories/CompanyRepository/CompanyActions'
+import {deleteDeposit, getDeposits} from '../../../../repositories/CompanyRepository/CompanyActions'
 import {Map} from "../../../molecules/Map/Map";
 import {CompanyLink} from "../../../molecules/CompanyLink/CompanyLink";
 
@@ -37,15 +37,21 @@ export default class CompanySingle {
             this.centeredDiv.appendChild(this.text)
         } else {
             this.deposits.forEach((dep) => {
-                // this.markers.push({
-                //     lat: dep.location.split(' ')[0],
-                //     lng: dep.location.split(' ')[1],
-                //     company_name: dep.company_name
-                // })
+                this.markers.push({
+                    lat: dep.location.split(' ')[0],
+                    lng: dep.location.split(' ')[1],
+                    company_name: dep.id
+                })
                 let text = new CompanyLink({
                     name: dep.id,
                     link: 'products',
-                    id: dep.id
+                    id: dep.id.toString(),
+                    onClick: () => Router.go('products', {id: dep.id}),
+                    onRemove: (e) => {
+                        e.preventDefault()
+                        deleteDeposit(dep.id)
+                        e.stopPropagation()
+                    }
                 })
                 this.flexDiv.appendChild(text.innerHTML())
 

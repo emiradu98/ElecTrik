@@ -1,6 +1,6 @@
 import Router from '../../../routes/Router'
 import {Button} from '../../molecules/Button/Button'
-import {getCompanies} from '../../../repositories/CompanyRepository/CompanyActions'
+import {deleteCompany, getCompanies} from '../../../repositories/CompanyRepository/CompanyActions'
 import CompanyRepository from '../../../repositories/CompanyRepository'
 import {CompanyLink} from '../../molecules/CompanyLink/CompanyLink'
 import {Map} from "../../molecules/Map/Map";
@@ -32,9 +32,13 @@ export default class Company {
         this.component.appendChild(this.rightButton)
         this.component.appendChild(this.flexDiv)
         this.markers = []
-        if(!_.isEmpty(this.companies)){
-            this.companies.forEach(comp=>{
-                this.markers.push({lat: comp.location.split(' ')[0], lng: comp.location.split(' ')[1], company_name: comp.company_name})
+        if (!_.isEmpty(this.companies)) {
+            this.companies.forEach(comp => {
+                this.markers.push({
+                    lat: comp.location.split(' ')[0],
+                    lng: comp.location.split(' ')[1],
+                    company_name: comp.company_name
+                })
             })
         } else {
             this.text = document.createElement('p')
@@ -75,7 +79,13 @@ export default class Company {
                     name: company.company_name,
                     link: 'company/single',
                     email: company.email,
-                    id: company.company_id
+                    id: company.company_id,
+                    onClick: () => Router.go('company/single', {id: company.company_id}),
+                    onRemove: (e) => {
+                        e.preventDefault()
+                        deleteCompany(company.company_id)
+                        e.stopPropagation()
+                    }
                 })
                 this.list.push(text.innerHTML())
             })
