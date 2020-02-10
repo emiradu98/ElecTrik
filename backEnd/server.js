@@ -66,11 +66,7 @@ function Server(){
                 if(isNaN(req.query[('v'+(i+1))]) === true){
                     sqlDemand += "'" + req.query[('v'+(i+1))] + "'";
                     if(i < parseInt((keys.length/3)) - 1){
-                        if(req.query[('f'+(i+1))] === req.query[('f'+(i+2))]){
-                            sqlDemand += ' OR ';
-                        }else{
-                            sqlDemand += ' AND ';
-                        }
+                        sqlDemand += ' AND ';
                     }
                 }else{
                     sqlDemand += + req.query[('v'+(i+1))];
@@ -278,8 +274,8 @@ function Server(){
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
-            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
-            let selection = requestInfo.selectFrom('payment',{client_Id:userData.data[0].company_id});
+            let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{client_Id:companyData.data[0].company_id});
             let selObj = {
                 status:'Ok',
                 data:[]
@@ -329,6 +325,52 @@ function Server(){
         }
     });
 
+    app.get('/products/shop',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'Need to be logged in!'});
+        }
+        if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
+            let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
+            let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let deposits = requestInfo.executeQuerySelect("SELECT * FROM deposits WHERE admin_ids LIKE '%" + userData.data[0].user_id + "%'");
+            let products = requestInfo.executeQuerySelect('SELECT * FROM products');
+            let retObj = {
+                status:'Ok',
+                data:[]
+            };
+            if(companyData.data !== undefined){
+                for(let i=0;i<products.data.length;i++){
+                    let ok = true;
+                    for(let j=0;j<companyData.data.length;j++){
+                        if(companyData.data[j].company_id === products.data[i].company_id){
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if(ok === true){
+                        retObj.data.push(products.data[i]);
+                    }
+                }
+            }else{
+                for(let i=0;i<products.data.length;i++){
+                    let ok = true;
+                    for(let j=0;j<deposits.data.length;j++){
+                        if(deposits.data[j].company_id === products.data[i].company_id){
+                            ok = false;
+                            break;
+                        }
+                    }
+                    if(ok === true){
+                        retObj.data.push(products.data[i]);
+                    }
+                }
+            }
+            res.send(retObj);
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
     app.get('/payment/provider',(req,res)=>{
         if(req.headers.authorization === undefined){
             res.statusCode = 401;
@@ -336,8 +378,8 @@ function Server(){
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
-            // let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
-            let selection = requestInfo.selectFrom('payment',{provider_Id:userData.data[0].company_id});
+            let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+            let selection = requestInfo.selectFrom('payment',{provider_Id:companyData.data[0].company_id});
             let selObj = {
                 status:'Ok',
                 data:[]
@@ -394,7 +436,7 @@ function Server(){
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
-            let companyData = requestInfo.selectFrom('companies',{company_id:userData.data[0].company_id});
+            let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
             let orders;
             if(requestInfo.isOwner({token:req.headers.authorization.split(' ')[1]}).status === 'Owner'){
                 orders = requestInfo.selectFrom('orders',{client_Id:companyData.data[0].company_id});
@@ -504,6 +546,8 @@ function Server(){
 
     app.post('/products/register',(req,res)=>{
         res.statusCode = 201;
+        let depositData = requestInfo.selectFrom('deposits',{id:req.body.deposit_id});
+        req.body.company_id = depositData.data[0].company_id;
         res.send(requestInfo.insertInto('products',[req.body]));
     });
 
@@ -556,7 +600,7 @@ function Server(){
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
-            let companyData = requestInfo.selectFrom('companies',{company_id:userData.data[0].company_id});
+            let companyData = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
             req.body.sender = companyData.data[0].company_name;
             let payments = requestInfo.selectFrom('payment',{provider_Id:companyData.data[0].company_id});
             for(let i=0;i<payments.data.length;i++){
