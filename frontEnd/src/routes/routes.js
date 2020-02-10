@@ -14,6 +14,10 @@ const ROUTES = {
 		name: 'Login',
 		render: loginPage
 	},
+	'shop': {
+		name: 'Shop',
+		render: loginPage
+	},
 	'register': {
 		name: 'Register',
 		render: registerPage
