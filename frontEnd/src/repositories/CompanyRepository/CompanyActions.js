@@ -4,9 +4,12 @@ import Router from '../../routes/Router'
 
 let firstCompany = true
 let firstDeposit = true
+let firstProduct = true
 
 export const getCompanies = async () => {
     const companyRepository = CompanyRepository
+    firstDeposit = true
+
     const cookie = document.cookie.split('token=')[1]
     if (cookie) {
         const response = await fetch(`${API_URL}/me/companies/`, {
@@ -61,8 +64,11 @@ export const getDeposits = async (id) => {
         if (response.status === 200) {
             const json = await response.json()
             const state = companyRepository.getDeposits()
-            state.deposits = await json.data
-            console.log(state)
+            if (json.data) {
+                state.deposits = json.data
+            } else {
+                state.deposits = []
+            }
             if (firstDeposit) {
                 firstDeposit = false
                 Router.go('company/single', {id})
@@ -99,6 +105,48 @@ export const deleteDeposit = async (id) => {
         if (response.status === 200) {
             firstDeposit = true
             getDeposits()
+        }
+    }
+}
+
+
+export const getProducts = async (id) => {
+    const cookie = document.cookie.split('token=')[1]
+    const companyRepository = CompanyRepository
+    if (cookie) {
+        const response = await fetch(`${API_URL}/products/all?search=&f1=deposit_id&o1==&v1=${id}`, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+        })
+        if (response.status === 200) {
+            const json = await response.json()
+            const state = companyRepository.getProducts()
+            if (json.data) {
+                state.products = json.data
+            } else {
+                state.products = []
+            }
+            if (firstProduct) {
+                firstProduct = false
+                Router.go('products', {id})
+            }
+        }
+    }
+}
+
+export const createProduct = async (data, id) => {
+    const cookie = document.cookie.split('token=')[1]
+    const companyRepository = CompanyRepository
+
+    if (cookie) {
+        const response = await fetch(`${API_URL}/products/register`, {
+            method: 'post',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+            body: JSON.stringify(data)
+        })
+        if (response.status === 201) {
+            firstProduct = true
+            Router.go('products', {id})
         }
     }
 }

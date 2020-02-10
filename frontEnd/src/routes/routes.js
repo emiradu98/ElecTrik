@@ -4,6 +4,8 @@ import companyPage from './pages/companyPage'
 import companyCreatePage from './pages/companyCreatePage'
 import companySingle from './pages/companySingle'
 import depositCreatePage from './pages/depositCreatePage'
+import productsPage from "./pages/productsPage";
+import productsCreatePage from "./pages/productsCreatePage";
 
 const ROUTES = {
 	'': {
@@ -34,6 +36,7 @@ const ROUTES = {
 		name: 'Deposit Create',
 		render: depositCreatePage
 	},
+
 	'company': {
 		name: 'Company',
 		render: companyPage
@@ -48,7 +51,11 @@ const ROUTES = {
 	},
 	'products': {
 		name: 'Products',
-		render: companyPage
+		render: productsPage
+	},
+	'products/create': {
+		name: 'Create Product',
+		render: productsCreatePage
 	}
 }
 

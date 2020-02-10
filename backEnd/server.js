@@ -109,6 +109,8 @@ function Server(){
             // console.log(companyData);
             if(companyData.data[0].owner_id === requestInfo.selectFrom('users',{token:tok}).data[0].user_id){
                 res.send(requestInfo.selectFrom('deposits',{company_id:parseInt(req.query['search'])}));
+            }else{
+                res.send({status:'NOthing to show!'});
             }
         }else{
             //
