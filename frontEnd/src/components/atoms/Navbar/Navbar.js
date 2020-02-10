@@ -70,9 +70,9 @@ export default class Navbar {
 		shopElement.classList.add('nav__link')
 
 
-		div.appendChild(shopElement)
 		if (state.isLoggedIn) {
 			div.appendChild(this.userDiv)
+			div.appendChild(shopElement)
 		}
 		nav.appendChild(div)
 
