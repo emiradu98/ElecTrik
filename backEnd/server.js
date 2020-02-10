@@ -1,6 +1,11 @@
 let WebSocketServer = require('websocket').server;
 const swaggerUi = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+let reqOperations = require('./reqModule/requestOperations');
+const WebSocket = require('ws');
+
+let sync = require('./sync')();
+// let webSo = require('./webSocket');
 const options = {
     swaggerDefinition:{
         info:{
@@ -17,7 +22,7 @@ const swaggerSpec = swaggerJSDoc(options);
 function Server(){
     const express = require('express');
     const bodyParser = require('body-parser');
-    let reqOperations = require('./reqModule/requestOperations');
+    // let reqOperations = require('./reqModule/requestOperations');
     // let userOperations = require('./reqModule/userOperations');
     // let companyOperations = require('./reqModule/companyOperations');
     // let companyInfo = new companyOperations();
@@ -212,6 +217,11 @@ function Server(){
         }
     });
 
+    app.get('/check',(req,res)=>{
+        sync.markOne();
+        res.send(sync.getArray());
+    });
+
     /**
      * @swagger
      * /me/deposits:
@@ -239,8 +249,14 @@ function Server(){
         }
         if(requestInfo.isLogged({token:req.headers.authorization.split(' ')[1]}) === true){
             let userData = requestInfo.selectFrom('users',{token:req.headers.authorization.split(' ')[1]});
-            let companies = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
-            res.send(companies);
+            if(requestInfo.isOwner({token:req.headers.authorization.split(' ')[1]}).status === 'Owner'){
+                console.log('owner');
+                let companies = requestInfo.selectFrom('companies',{owner_id:userData.data[0].user_id});
+                res.send(companies);
+            }else{
+                let companies = requestInfo.executeQuerySelect("SELECT * FROM companies WHERE employees LIKE '%" + userData.data[0].user_id + "%'");
+                res.send(companies);
+            }
         }else{
             res.send({status:'Invalid token!'});
         }
@@ -443,18 +459,24 @@ function Server(){
      */
 
     app.post('/auth/register',(req,res)=>{
+        let selectData;
+        let inviteData;
         if(req.body.invite !== undefined){
-            let selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
+            selectData = requestInfo.selectFrom('companies',{invite:req.body.invite});
             if(selectData === undefined){
                 res.send({status:'Invalid invitation!'});
             }
             req.body.company_id = selectData.data[0].company_id;
+            inviteData = req.body.invite;
             delete req.body.invite;
         }else{
             req.body.company_id = 0;
         }
         res.statusCode = 201;
-        res.send(requestInfo.register('users',req.body));
+        requestInfo.register('users',req.body);
+        let usrData = requestInfo.selectFrom('users',{email:req.body.email});
+        requestInfo.updateData('companies',{value:{employees:selectData.data[0].employees + ' ' + usrData.data[0].user_id},where:{invite:inviteData}});
+        res.send({status:'Registered succesfull'});
     });
 
     app.post('/auth/login',(req,res)=>{
@@ -471,6 +493,7 @@ function Server(){
 
     app.post('/companies/register',(req,res)=>{
         res.statusCode = 201;
+        req.body.employees = '';
         res.send(requestInfo.insertInto('companies',[req.body]));
     });
 
@@ -637,4 +660,31 @@ function Server(){
         console.log(`Server running at: http://localhost:${PORT}/`);
     });
 }
+
+function call(){
+    const wss = new WebSocket.Server({port:8079});
+    wss.on('connection',(ws)=>{
+        ws.on('message',(tok)=>{
+            // sync.markOne();
+            ws.send(JSON.stringify(sync.getArray()));
+            // let userData = requestInfo.selectFrom('users',{token:tok});
+            // let newsFeed = requestInfo.selectFrom('payment',{receiver:userData.data[0].company_id});
+            // for(let i=0;i<newsFeed.data.length;i++){
+            //     let dataObj = {};
+            //     dataObj.subject = newsFeed.data[i].subject;
+            //     dataObj.message = newsFeed.data[i].message;
+            //     ws.send(JSON.stringify(dataObj));
+            // }
+        });
+        wss.clients.forEach((client)=>{
+            for(let i=0;i<sync.getArray();i++){
+
+            }
+        });
+    });
+}
+//la conectarea din partea clientului, socket-ul va cauta sa vada anunturile si i le va trimite
+
 Server();
+
+call();
