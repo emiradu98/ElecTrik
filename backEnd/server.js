@@ -645,7 +645,8 @@ function Server() {
         let tok = req.headers.authorization.split(' ')[1];
         let userData = requestInfo.selectFrom('users',{token:tok});
         if(requestInfo.isLogged({token:tok}) === true){
-            let bin = BUffer.from(JSON.stringify(carts[tok]));
+            let bin = Buffer.from(JSON.stringify(carts[tok]));
+            carts[tok] = undefined;
             res.send(requestInfo.insertInto('comenzi',[{user_id:userData.data[0].user_id,comanda:bin}]));
         }else{
             res.send({status:'Invalid token!'});
