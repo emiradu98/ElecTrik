@@ -1,4 +1,4 @@
-import { companies, deposits, products } from '../../mock/companies.json'
+import { companies, deposits, products, shop } from '../../mock/companies.json'
 
 export default class CompanyRepository {
 	static getState () {
@@ -9,5 +9,8 @@ export default class CompanyRepository {
 	}
 	static getProducts(){
 		return products
+	}
+	static getShop(){
+		return shop
 	}
 }

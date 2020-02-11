@@ -1,0 +1,101 @@
+
+.centered-form1 {
+  align-self: center;
+  width: 100%;
+  justify-content: flex-end;
+  background: #C5C5C5;
+  border-radius: 5px;
+  overflow: hidden;
+  flex-direction: row;
+  display: flex;
+  height: calc(100vh - 100px);
+}
+
+.center {
+  align-self: center;
+}
+
+.spinner {
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+
+  & * {
+    display: flex;
+  }
+}
+
+.spinnerWrapper {
+  align-self: flex-end;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.text {
+  color: #fff;
+}
+
+.add {
+  cursor: pointer;
+  padding: 20px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  background: #F39791;
+  transition: 0.5s ease;
+  user-select: none;
+  font-size: 15px;
+  &:hover {
+    background: #a94442;
+    color: #fff;
+  }
+}
+
+.subtract {
+  cursor: pointer;
+  padding: 20px;
+  background: #F39791;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  transition: 0.5s ease;
+  user-select: none;
+  font-size: 15px;
+
+  &:hover {
+    background: #a94442;
+    color: #fff;
+
+  }
+}
+
+.quantity {
+  background: #fff;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.price {
+  font-size: 50px;
+  font-weight: bold;
+  text-align: right;
+  color: #fff;
+  align-self: flex-end;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.rightPanel {
+  height: 100%;
+  align-self: flex-end;
+  background: #1b6d85;
+  border-radius: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  width: 300px;
+}

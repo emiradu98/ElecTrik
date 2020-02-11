@@ -19,6 +19,7 @@ export default class Navbar {
 		if (state.isLoggedIn) {
 			excludedRoutes.push('shop')
 			excludedRoutes.push('company')
+			excludedRoutes.push('cart')
 		} else {
 			excludedRoutes.push('register')
 			excludedRoutes.push('login')
@@ -64,14 +65,8 @@ export default class Navbar {
 		this.userBtn.classList.add('nav__link')
 		if (location.hash.startsWith('#')) this.userBtn.classList.add('--active')
 
-		const shopElement = document.createElement('a')
-		shopElement.addEventListener('click', () => onClick(home))
-		shopElement.textContent = 'Notifications'
-		shopElement.classList.add('nav__link')
-
 
 		if (state.isLoggedIn) {
-			div.appendChild(shopElement)
 			div.appendChild(this.userDiv)
 		}
 		nav.appendChild(div)

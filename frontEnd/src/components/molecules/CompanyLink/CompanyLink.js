@@ -1,7 +1,7 @@
 import './CompanyLink.scss'
 
 export class CompanyLink {
-    constructor({name, link, email, id, onClick, onRemove}) {
+    constructor({name, link, email, id, onClick, onRemove, noRemove = false}) {
         this.div = document.createElement('div')
         this.div.className = 'companyLink'
 
@@ -10,7 +10,9 @@ export class CompanyLink {
         this.delete.addEventListener('click', onRemove)
         this.delete.innerText = 'ⓧ'
 
-        this.div.appendChild(this.delete)
+        if (!noRemove) {
+            this.div.appendChild(this.delete)
+        }
         this.name = document.createElement('p')
         this.name.className = 'companyName'
         this.name.innerText = name

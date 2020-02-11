@@ -5,6 +5,7 @@ import Router from '../../routes/Router'
 let firstCompany = true
 let firstDeposit = true
 let firstProduct = true
+let firstShop = true
 
 export const getCompanies = async () => {
     const companyRepository = CompanyRepository
@@ -164,6 +165,55 @@ export const deleteProduct = async (id, depId) => {
         if (response.status === 200) {
             firstProduct = true
             getProducts(depId)
+        }
+    }
+}
+
+export const getShop = async () => {
+    const cookie = document.cookie.split('token=')[1]
+    const companyRepository = CompanyRepository
+    if (cookie) {
+        const response = await fetch(`${API_URL}/products/shop`, {
+            method: 'get',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+        })
+        if (response.status === 200) {
+            const json = await response.json()
+            const state = companyRepository.getShop()
+            if (json.data) {
+                state.shop = json.data
+            } else {
+                state.shop = []
+            }
+            if (firstShop) {
+                firstShop = false
+                Router.go('shop')
+            }
+        }
+    }
+}
+
+export const addToCart = async (data) => {
+    const cookie = document.cookie.split('token=')[1]
+    const companyRepository = CompanyRepository
+    if (cookie) {
+        const response = await fetch(`${API_URL}/addToCart`, {
+            method: 'post',
+            headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
+            body: data
+        })
+        if (response.status === 200) {
+            const json = await response.json()
+            const state = companyRepository.getShop()
+            if (json.data) {
+                state.shop = json.data
+            } else {
+                state.shop = []
+            }
+            if (firstShop) {
+                firstShop = false
+                Router.go('shop')
+            }
         }
     }
 }

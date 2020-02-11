@@ -6,6 +6,8 @@ import companySingle from './pages/companySingle'
 import depositCreatePage from './pages/depositCreatePage'
 import productsPage from "./pages/productsPage";
 import productsCreatePage from "./pages/productsCreatePage";
+import shopPage from "./pages/shopPage";
+import addCart from "./pages/addCart";
 
 const ROUTES = {
 	'': {
@@ -18,7 +20,11 @@ const ROUTES = {
 	},
 	'shop': {
 		name: 'Shop',
-		render: loginPage
+		render: shopPage
+	},
+	'shop/product': {
+		name: 'Shop product',
+		render: addCart
 	},
 	'register': {
 		name: 'Register',
@@ -55,6 +61,10 @@ const ROUTES = {
 	},
 	'products/create': {
 		name: 'Create Product',
+		render: productsCreatePage
+	},
+	'cart': {
+		name: 'Cart',
 		render: productsCreatePage
 	}
 }
