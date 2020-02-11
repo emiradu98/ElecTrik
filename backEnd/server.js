@@ -218,6 +218,48 @@ function Server() {
         }
     });
 
+        /**
+     * @swagger
+     * /me/statistics:
+     *  get:
+     *      description: Use to request all companies, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
+    app.get('/me/statistics',(req,res)=>{
+        if(req.headers.authorization === undefined){
+            res.send({status:'You must be logged in!'});
+        }
+        let tok = req.headers.authorization.split(' ')[1];
+        if(requestInfo.isLogged({token:tok}) === true){
+            let selection = requestInfo.selectFrom('users',{token:tok});
+            let comp = requestInfo.selectFrom('companies',{owner_id:selection.data[0].user_id});
+            if(comp.data === undefined){
+                comp = requestInfo.executeQuerySelect("SELECT * FROM companies WHERE employees LIKE'%" + userData.data[0].user_id + "%'");
+            }
+            if(comp.data === undefined){
+                res.send({status:'Nothing to show'});
+            }
+            let paysC = requestInfo.selectFrom('payment',{client_Id:comp.data[0].company_id});
+            let paysP = requestInfo.selectFrom('payment',{provider_Id:comp.data[0].company_id});
+
+        }else{
+            res.send({status:'Invalid token!'});
+        }
+    });
+
+        /**
+     * @swagger
+     * /check:
+     *  get:
+     *      description: Use to request all companies, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/check', (req, res) => {
         sync.quickAdd('1', '1', '1');
         res.send(sync.getArray());
@@ -244,6 +286,16 @@ function Server() {
         }
     });
 
+        /**
+     * @swagger
+     * /me/companies:
+     *  get:
+     *      description: Use to request all companies that are owned by user, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/me/companies', (req, res) => {
         if (req.headers.authorization === undefined) {
             res.send({ status: 'You must be logged in!' });
@@ -266,6 +318,16 @@ function Server() {
     app.get('/rut', (req, res) => {
         res.send(req.query);
     });
+
+        /**
+     * @swagger
+     * /companies/all:
+     *  get:
+     *      description: Use to request all payments made by a specific company where company is client, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/payment/client', (req, res) => {
         if (req.headers.authorization === undefined) {
@@ -325,6 +387,16 @@ function Server() {
         }
     });
 
+        /**
+     * @swagger
+     * /products/shop:
+     *  get:
+     *      description: Use to request all products not owned by the user
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/products/shop', (req, res) => {
         if (req.headers.authorization === undefined) {
             res.send({ status: 'Need to be logged in!' });
@@ -370,6 +442,16 @@ function Server() {
             res.send({ status: 'Invalid token!' });
         }
     });
+
+    /**
+     * @swagger
+     * /payment/provider:
+     *  get:
+     *      description: Use to request payments where company id is provider
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/payment/provider', (req, res) => {
         if (req.headers.authorization === undefined) {
@@ -428,6 +510,16 @@ function Server() {
             res.send({ status: 'Invalid token!' });
         }
     });
+
+        /**
+     * @swagger
+     * /orders/all:
+     *  get:
+     *      description: Use to request all orders for a specific company, only if logged in
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
 
     app.get('/orders/all', (req, res) => {
         if (req.headers.authorization === undefined) {
@@ -496,6 +588,16 @@ function Server() {
         }
     });
 
+    /**
+     * @swagger
+     * /me/cart:
+     *  get:
+     *      description: Use to request all items from cart
+     *      responses:
+     *          '200':
+     *              description:A succesfull response
+     */
+
     app.get('/me/cart', (req, res) => {
         if (req.headers.authorization === undefined) {
             res.send({ status: 'Must be logged in!' });
@@ -550,9 +652,35 @@ function Server() {
         res.send({ status: 'Registered succesfull' });
     });
 
+    /**
+     * @swagger
+     * /auth/login:
+     *  post:
+     *      summary: Login user by credentials
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
+
     app.post('/auth/login', (req, res) => {
         res.send(requestInfo.loginUser(req.body));
     });
+
+    /**
+     * @swagger
+     * /auth/logout:
+     *  post:
+     *      summary: Logout a user if he is logged in
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/auth/logout', (req, res) => {
         if (requestInfo.isLogged({ token: req.headers.authorization.split(' ')[1] }) === true) {
@@ -562,11 +690,37 @@ function Server() {
         }
     });
 
+    /**
+     * @swagger
+     * /companies/register:
+     *  post:
+     *      summary: Register a new company
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
+
     app.post('/companies/register', (req, res) => {
         res.statusCode = 201;
         req.body.employees = '';
         res.send(requestInfo.insertInto('companies', [req.body]));
     });
+
+    /**
+     * @swagger
+     * /products/register:
+     *  post:
+     *      summary: Register new product
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/products/register', (req, res) => {
         res.statusCode = 201;
@@ -574,6 +728,19 @@ function Server() {
         req.body.company_id = depositData.data[0].company_id;
         res.send(requestInfo.insertInto('products', [req.body]));
     });
+
+    /**
+     * @swagger
+     * /deposits/register:
+     *  post:
+     *      summary: Register new deposit
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/deposits/register', (req, res) => {
         res.statusCode = 201;
@@ -592,6 +759,19 @@ function Server() {
             console.log(obj);
         });
     });
+
+    /**
+     * @swagger
+     * /auth/register:
+     *  post:
+     *      summary: Register new user
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/payment/register', (req, res) => {
         if (req.headers.authorization === undefined) {
@@ -616,6 +796,19 @@ function Server() {
             res.send({ status: 'Invalid token!' });
         }
     });
+
+    /**
+     * @swagger
+     * /news/add:
+     *  post:
+     *      summary: Register new user
+     *      requestBody:
+     *          required:true
+     * 
+     *      responses:
+     *          '201':
+     *              description:Created
+     */
 
     app.post('/news/add', (req, res) => {
         if (req.headers.authorization === undefined) {
@@ -790,7 +983,7 @@ function Server() {
                     break;
                 }
             }
-            res.send({status:'Item removed!'});
+            res.send({status:'Item removed'});
         } else {
             res.send({ status: 'Invalid token!' });
         }
