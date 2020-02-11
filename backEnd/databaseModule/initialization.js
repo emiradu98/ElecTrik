@@ -120,6 +120,11 @@ function SqliteDbInit(dataBaseName){
 }
 
 let a = new SqliteDbInit('electrik.db');
+// a.makeNew(`CREATE TABLE comenzi(
+//     id INTEGER PRIMARY KEY,
+//     user_id INTEGER,
+//     comanda BLOB
+// )`);
 // a.makeNew('ALTER TABLE companies ADD employees TEXT');
 // a.makeNew('ALTER TABLE companies ADD location TEXT');
 // a.makeNew('ALTER TABLE companies ADD invite TEXT');
