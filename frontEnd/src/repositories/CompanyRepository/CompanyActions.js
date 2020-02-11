@@ -1,6 +1,7 @@
 import {API_URL} from '../../../static/constants/constants'
 import CompanyRepository from './CompanyRepository'
 import Router from '../../routes/Router'
+import {autoLogin} from "../AuthRepository/AuthActions";
 
 let firstCompany = true
 let firstDeposit = true
@@ -195,7 +196,6 @@ export const getShop = async () => {
 
 export const addToCart = async (data) => {
     const cookie = document.cookie.split('token=')[1]
-    const companyRepository = CompanyRepository
     if (cookie) {
         const response = await fetch(`${API_URL}/addToCart`, {
             method: 'post',
@@ -203,17 +203,8 @@ export const addToCart = async (data) => {
             body: JSON.stringify(data)
         })
         if (response.status === 200) {
-            const json = await response.json()
-            const state = companyRepository.getShop()
-            if (json.data) {
-                state.shop = json.data
-            } else {
-                state.shop = []
-            }
-            if (firstShop) {
-                firstShop = false
-                Router.go('shop')
-            }
+            autoLogin()
+            Router.go('shop')
         }
     }
 }
