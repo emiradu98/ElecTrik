@@ -50,6 +50,7 @@ export const autoLogin = async () => {
 			const loginState = authRepository.getState()
 			loginState.isLoggedIn = true
 			const json = await response.json()
+			loginState.cart_length = json.cart_length
 			loginState.user = json.data[0]
 			Router.go('company')
 		}
