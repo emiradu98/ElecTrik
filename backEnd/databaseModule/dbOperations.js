@@ -135,7 +135,7 @@ let arr_obj = [
 ];
 module.exports = dbOperations;
 // new dbOperations('electrik.db').updateData('companies',{invite:'emitzu'},{company_id:19});
-// console.log(new dbOperations('electrik.db').makeSelection('SELECT * FROM deposits'));
+// console.log(new dbOperations('electrik.db').makeSelection('SELECT * FROM comenzi'));
 // new dbOperations('electrik.db').updateData('companies',{owner_id:3},{company_id:1});
 // console.log(new dbOperations('electrik.db').makeSelection("SELECT * FROM payment"));
 //console.log(typeof new dbOperations('electrik.db').selectData('users')[0]);
