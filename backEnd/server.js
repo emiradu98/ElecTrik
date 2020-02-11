@@ -646,6 +646,10 @@ function Server() {
         let userData = requestInfo.selectFrom('users',{token:tok});
         if(requestInfo.isLogged({token:tok}) === true){
             let bin = Buffer.from(JSON.stringify(carts[tok]));
+            for(let i=0;i<carts[tok].data.length;i++){
+                let ob = requestInfo.selectFrom('products',{id:carts[tok].data[i].id});
+                requestInfo.updateData('products',{where:{id:carts[tok].data[i].id},value:{stock:ob.data[0].stock - carts[tok].data[i].quantity}});
+            }
             carts[tok] = undefined;
             res.send(requestInfo.insertInto('comenzi',[{user_id:userData.data[0].user_id,comanda:bin}]));
         }else{
@@ -685,6 +689,7 @@ function Server() {
                 selection.quantity = req.body.quantity;
                 carts[tok].data.push(selection);
             }
+            res.send({status:'Item added!'});
         } else {
             res.send({ status: 'Invalid token!' });
         }
@@ -785,6 +790,7 @@ function Server() {
                     break;
                 }
             }
+            res.send({status:'Item removed!'});
         } else {
             res.send({ status: 'Invalid token!' });
         }
