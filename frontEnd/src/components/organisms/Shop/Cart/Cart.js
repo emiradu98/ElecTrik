@@ -1,5 +1,6 @@
 import {Button} from "../../../molecules/Button/Button";
 import Router from "../../../../routes/Router";
+import {addToCart} from "../../../../repositories/CompanyRepository/CompanyActions";
 
 require('./Cart.scss')
 
@@ -81,7 +82,10 @@ export default class Cart {
             this.component.appendChild(this.product)
             this.submit = new Button( {
                 innerText: 'Buy product', onClick: () => {
-                    Router.go('company/create')
+                    addToCart({
+                        id: product.id,
+                        quantity: this.quantity
+                    })
                 }, type: 'button'
             })
 

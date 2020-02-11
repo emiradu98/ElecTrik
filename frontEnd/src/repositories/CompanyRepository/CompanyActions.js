@@ -200,7 +200,7 @@ export const addToCart = async (data) => {
         const response = await fetch(`${API_URL}/addToCart`, {
             method: 'post',
             headers: {'Content-Type': 'application/json', 'Authorization': `Bearer ${cookie}`},
-            body: data
+            body: JSON.stringify(data)
         })
         if (response.status === 200) {
             const json = await response.json()
